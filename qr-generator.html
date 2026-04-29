@@ -1,313 +1,322 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Begotas Cafe - QR Code Generator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .container {
-            background: #1e1e1e;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 600px;
-            width: 100%;
-            border: 1px solid #333;
-            text-align: center;
-        }
-
-        h1 {
-            color: #c9a66b;
-            margin-bottom: 10px;
-            font-size: 1.8rem;
-        }
-
-        p {
-            color: #a0a0a0;
-            margin-bottom: 25px;
-        }
-
-        .preview-box {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 25px;
-            display: inline-block;
-        }
-
-        #qrcode {
-            width: 250px;
-            height: 250px;
-        }
-
-        #qrcode img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .controls {
-            display: grid;
-            gap: 15px;
-            margin-bottom: 25px;
-            text-align: left;
-        }
-
-        .control-group {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 15px;
-            background: #242424;
-            border-radius: 10px;
-            border: 1px solid #333;
-        }
-
-        .control-group label {
-            color: #a0a0a0;
-            font-size: 0.9rem;
-        }
-
-        .control-group span {
-            color: #666;
-            font-size: 0.8rem;
-        }
-
-        input[type="color"] {
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            background: none;
-        }
-
-        input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-
-        input[type="color"]::-webkit-color-swatch {
-            border: 2px solid #444;
-            border-radius: 8px;
-        }
-
-        select {
-            padding: 10px 15px;
-            background: #333;
-            border: 1px solid #444;
-            border-radius: 8px;
-            color: white;
-            font-size: 0.9rem;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 25px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background: #c9a66b;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #a88b4f;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: #333;
-            color: #a0a0a0;
-            border: 1px solid #444;
-        }
-
-        .btn-secondary:hover {
-            border-color: #c9a66b;
-            color: #c9a66b;
-        }
-
-        .note {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        .info {
-            background: #242424;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .info strong {
-            color: #c9a66b;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h1>Begotas Cafe</h1>
-        <p>Advanced QR Code Generator</p>
-
-        <div class="info">
-            <strong>Menu URL:</strong> <input type="text" id="menuUrl" value="https://begotascafe.netlify.app/" style="background:transparent;border:none;color:#c9a66b;font-weight:bold;width:250px;"><br>
-            <span style="color:#666;font-size:0.85rem;">Error Correction: Level H (30%)</span>
-        </div>
-
-        <div class="preview-box">
-            <div id="qrcode"></div>
-        </div>
-
-        <div class="controls">
-            <div class="control-group">
-                <label>QR Color</label>
-                <input type="color" id="darkColor" value="#c9a66b">
-            </div>
-            <div class="control-group">
-                <label>Background</label>
-                <input type="color" id="lightColor" value="#ffffff">
-            </div>
-            <div class="control-group">
-                <label>Size</label>
-                <select id="sizeSelect">
-                    <option value="500">500px (Small)</option>
-                    <option value="1000">1000px (Medium)</option>
-                    <option value="2000" selected>2000px (Large/Print)</option>
-                    <option value="4000">4000px (Poster)</option>
-                </select>
-            </div>
-            <div class="control-group">
-                <label>Center Logo</label>
-                <input type="file" id="logoUpload" accept="image/*" style="color:#666;font-size:0.8rem;">
-            </div>
-        </div>
-
-        <div class="btn-group">
-            <button class="btn btn-primary" onclick="generateQR()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
-                    <path d="M21 3v5h-5"></path>
-                </svg>
-                Generate
-            </button>
-            <a href="#" class="btn btn-primary" id="downloadBtn" download="begotas-cafe-qr.png">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                Download PNG
-            </a>
-        </div>
-
-        <p class="note">300 DPI ready • 30% error correction • Print at any size</p>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.2.2/build/qrcode.min.js"></script>
-    <script>
-        let qrDataUrl = '';
-        let uploadedLogo = null;
-
-        function generateQR() {
-            const menuUrl = document.getElementById('menuUrl').value;
-            const darkColor = document.getElementById('darkColor').value;
-            const lightColor = document.getElementById('lightColor').value;
-            const size = parseInt(document.getElementById('sizeSelect').value);
-
-            const canvas = document.createElement('canvas');
-
-            QRCode.toCanvas(canvas, menuUrl, {
-                width: size,
-                margin: 2,
-                errorCorrectionLevel: 'H',
-                color: {
-                    dark: darkColor,
-                    light: lightColor
-                },
-                typeNumber: 0,
-                mode: 'Byte'
-            }, function (error) {
-                if (error) console.error(error);
-
-                if (uploadedLogo) {
-                    const ctx = canvas.getContext('2d');
-                    const logoSize = size * 0.2;
-                    const logoX = (size - logoSize) / 2;
-                    const logoY = (size - logoSize) / 2;
-                    
-                    ctx.drawImage(uploadedLogo, logoX, logoY, logoSize, logoSize);
-                }
-
-                qrDataUrl = canvas.toDataURL('image/png');
-
-                const qrContainer = document.getElementById('qrcode');
-                qrContainer.innerHTML = '';
-
-                const img = new Image();
-                img.src = qrDataUrl;
-                img.style.width = '250px';
-                img.style.height = '250px';
-                qrContainer.appendChild(img);
-
-                document.getElementById('downloadBtn').href = qrDataUrl;
-            });
-        }
-
-        document.getElementById('menuUrl').addEventListener('input', generateQR);
-        document.getElementById('darkColor').addEventListener('input', generateQR);
-        document.getElementById('lightColor').addEventListener('input', generateQR);
-        document.getElementById('sizeSelect').addEventListener('change', generateQR);
-        
-        document.getElementById('logoUpload').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const img = new Image();
-                    img.onload = function() {
-                        uploadedLogo = img;
-                        generateQR();
-                    };
-                    img.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Begotas Cafe - QR Code Generator</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
-        });
 
-        generateQR();
-    </script>
-</body>
+            body {
+                font-family: 'Poppins', sans-serif;
+                background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
 
+            .container {
+                background: #1e1e1e;
+                border-radius: 20px;
+                padding: 40px;
+                max-width: 600px;
+                width: 100%;
+                border: 1px solid #333;
+                text-align: center;
+            }
+
+            h1 {
+                color: #c9a66b;
+                margin-bottom: 10px;
+                font-size: 1.8rem;
+            }
+
+            p {
+                color: #a0a0a0;
+                margin-bottom: 25px;
+            }
+
+            .preview-box {
+                background: white;
+                border-radius: 15px;
+                padding: 30px;
+                margin-bottom: 25px;
+                display: inline-block;
+            }
+
+            #qrcode {
+                width: 250px;
+                height: 250px;
+            }
+
+            #qrcode img {
+                width: 100%;
+                height: 100%;
+            }
+
+            .controls {
+                display: grid;
+                gap: 15px;
+                margin-bottom: 25px;
+                text-align: left;
+            }
+
+            .control-group {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 15px;
+                background: #242424;
+                border-radius: 10px;
+                border: 1px solid #333;
+            }
+
+            .control-group label {
+                color: #a0a0a0;
+                font-size: 0.9rem;
+            }
+
+            .control-group span {
+                color: #666;
+                font-size: 0.8rem;
+            }
+
+            input[type='color'] {
+                width: 40px;
+                height: 40px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                background: none;
+            }
+
+            input[type='color']::-webkit-color-swatch-wrapper {
+                padding: 0;
+            }
+
+            input[type='color']::-webkit-color-swatch {
+                border: 2px solid #444;
+                border-radius: 8px;
+            }
+
+            select {
+                padding: 10px 15px;
+                background: #333;
+                border: 1px solid #444;
+                border-radius: 8px;
+                color: white;
+                font-size: 0.9rem;
+            }
+
+            .btn-group {
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                padding: 15px 25px;
+                border: none;
+                border-radius: 10px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+                text-decoration: none;
+            }
+
+            .btn-primary {
+                background: #c9a66b;
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background: #a88b4f;
+                transform: translateY(-2px);
+            }
+
+            .btn-secondary {
+                background: #333;
+                color: #a0a0a0;
+                border: 1px solid #444;
+            }
+
+            .btn-secondary:hover {
+                border-color: #c9a66b;
+                color: #c9a66b;
+            }
+
+            .note {
+                margin-top: 20px;
+                font-size: 0.85rem;
+                color: #666;
+            }
+
+            .info {
+                background: #242424;
+                padding: 15px;
+                border-radius: 10px;
+                margin-bottom: 20px;
+            }
+
+            .info strong {
+                color: #c9a66b;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Begotas Cafe</h1>
+            <p>Advanced QR Code Generator</p>
+
+            <div class="info">
+                <strong>Menu URL:</strong>
+                <input
+                    type="text"
+                    id="menuUrl"
+                    value="https://begotascafe.netlify.app/"
+                    style="background: transparent; border: none; color: #c9a66b; font-weight: bold; width: 250px"
+                /><br />
+                <span style="color: #666; font-size: 0.85rem">Error Correction: Level H (30%)</span>
+            </div>
+
+            <div class="preview-box">
+                <div id="qrcode"></div>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label>QR Color</label>
+                    <input type="color" id="darkColor" value="#c9a66b" />
+                </div>
+                <div class="control-group">
+                    <label>Background</label>
+                    <input type="color" id="lightColor" value="#ffffff" />
+                </div>
+                <div class="control-group">
+                    <label>Size</label>
+                    <select id="sizeSelect">
+                        <option value="500">500px (Small)</option>
+                        <option value="1000">1000px (Medium)</option>
+                        <option value="2000" selected>2000px (Large/Print)</option>
+                        <option value="4000">4000px (Poster)</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Center Logo</label>
+                    <input type="file" id="logoUpload" accept="image/*" style="color: #666; font-size: 0.8rem" />
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="generateQR()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path>
+                        <path d="M21 3v5h-5"></path>
+                    </svg>
+                    Generate
+                </button>
+                <a href="#" class="btn btn-primary" id="downloadBtn" download="begotas-cafe-qr.png">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download PNG
+                </a>
+            </div>
+
+            <p class="note">300 DPI ready • 30% error correction • Print at any size</p>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/qrcode@1.2.2/build/qrcode.min.js"></script>
+        <script>
+            let qrDataUrl = '';
+            let uploadedLogo = null;
+
+            function generateQR() {
+                const menuUrl = document.getElementById('menuUrl').value;
+                const darkColor = document.getElementById('darkColor').value;
+                const lightColor = document.getElementById('lightColor').value;
+                const size = parseInt(document.getElementById('sizeSelect').value);
+
+                const canvas = document.createElement('canvas');
+
+                QRCode.toCanvas(
+                    canvas,
+                    menuUrl,
+                    {
+                        width: size,
+                        margin: 2,
+                        errorCorrectionLevel: 'H',
+                        color: {
+                            dark: darkColor,
+                            light: lightColor,
+                        },
+                        typeNumber: 0,
+                        mode: 'Byte',
+                    },
+                    function (error) {
+                        if (error) console.error(error);
+
+                        if (uploadedLogo) {
+                            const ctx = canvas.getContext('2d');
+                            const logoSize = size * 0.2;
+                            const logoX = (size - logoSize) / 2;
+                            const logoY = (size - logoSize) / 2;
+
+                            ctx.drawImage(uploadedLogo, logoX, logoY, logoSize, logoSize);
+                        }
+
+                        qrDataUrl = canvas.toDataURL('image/png');
+
+                        const qrContainer = document.getElementById('qrcode');
+                        qrContainer.innerHTML = '';
+
+                        const img = new Image();
+                        img.src = qrDataUrl;
+                        img.style.width = '250px';
+                        img.style.height = '250px';
+                        qrContainer.appendChild(img);
+
+                        document.getElementById('downloadBtn').href = qrDataUrl;
+                    },
+                );
+            }
+
+            document.getElementById('menuUrl').addEventListener('input', generateQR);
+            document.getElementById('darkColor').addEventListener('input', generateQR);
+            document.getElementById('lightColor').addEventListener('input', generateQR);
+            document.getElementById('sizeSelect').addEventListener('change', generateQR);
+
+            document.getElementById('logoUpload').addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const img = new Image();
+                        img.onload = function () {
+                            uploadedLogo = img;
+                            generateQR();
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            generateQR();
+        </script>
+    </body>
 </html>

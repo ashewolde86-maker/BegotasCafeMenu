@@ -1,0 +1,19 @@
+{
+    "name": "begotas-cafe-menu",
+    "version": "1.0.0",
+    "description": "Begotas Cafe - Digital Menu",
+    "scripts": {
+        "build": "node scripts/build.js",
+        "lint:js": "eslint \"**/*.js\"",
+        "lint:css": "stylelint \"**/*.css\"",
+        "lint": "npm run lint:js && npm run lint:css",
+        "format": "prettier --write \"**/*.{html,css,js,json}\"",
+        "format:check": "prettier --check \"**/*.{html,css,js,json}\""
+    },
+    "devDependencies": {
+        "eslint": "^8.57.0",
+        "stylelint": "^16.3.0",
+        "stylelint-config-standard": "^36.0.0",
+        "prettier": "^3.2.5"
+    }
+}

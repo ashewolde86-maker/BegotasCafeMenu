@@ -1,7 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initMenuDatabase();
     initTranslations();
-    
+
     let currentCategory = 'all';
     let currentSubCategory = 'all';
     let currentView = 'grid';
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.menuData = getMenuData();
     window.menuData.subCategories = window.menuData.subCategories || [];
-    window.menuData.specials = (window.menuData.specials || []).filter(s => s.available !== false);
+    window.menuData.specials = (window.menuData.specials || []).filter((s) => s.available !== false);
 
     initCarousel();
     renderFilterChips();
@@ -41,7 +41,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        carouselSlides.innerHTML = window.menuData.specials.map((product, index) => `
+        carouselSlides.innerHTML = window.menuData.specials
+            .map(
+                (product, index) => `
             <div class="carousel-slide">
                 <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/400x300?text=' + encodeURIComponent('${product.name}')">
                 <div class="carousel-slide-content">
@@ -50,14 +52,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p class="price">${product.price}.00 Br</p>
                 </div>
             </div>
-        `).join('');
+        `,
+            )
+            .join('');
 
         if (carouselPagination && window.menuData.specials.length > 0) {
-            carouselPagination.innerHTML = window.menuData.specials.map((_, index) => `
+            carouselPagination.innerHTML = window.menuData.specials
+                .map(
+                    (_, index) => `
                 <div class="dot ${index === 0 ? 'active' : ''}" data-index="${index}"></div>
-            `).join('');
+            `,
+                )
+                .join('');
 
-            carouselPagination.querySelectorAll('.dot').forEach(dot => {
+            carouselPagination.querySelectorAll('.dot').forEach((dot) => {
                 dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.index)));
             });
         }
@@ -120,60 +128,89 @@ document.addEventListener('DOMContentLoaded', function() {
     function getSubCategoryIcon(name) {
         const normalized = (name || '').toLowerCase().trim();
         const iconMap = {
-            'all types': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>',
-            'juice': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l-1 6v12a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8L8 2z"></path><path d="M10 8h4"></path></svg>',
-            'normal juice': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l-1 6v12a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8L8 2z"></path><path d="M10 8h4"></path></svg>',
-            'shake': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h10l-2 6v9a3 3 0 0 1-3 3h0a3 3 0 0 1-3-3V9L7 3z"></path><path d="M12 2v3"></path></svg>',
-            'shake juice': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h10l-2 6v9a3 3 0 0 1-3 3h0a3 3 0 0 1-3-3V9L7 3z"></path><path d="M12 2v3"></path></svg>',
-            'coffee': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-5z"></path><path d="M16 11h2a2 2 0 0 1 0 4h-2"></path><path d="M8 3v3"></path><path d="M12 3v3"></path></svg>',
-            'coffee series': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-5z"></path><path d="M16 11h2a2 2 0 0 1 0 4h-2"></path><path d="M8 3v3"></path><path d="M12 3v3"></path></svg>',
-            'tea': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11h11v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-4z"></path><path d="M16 12h2a2 2 0 0 1 0 3h-2"></path><path d="M7 8h7"></path></svg>',
-            'tea series': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11h11v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-4z"></path><path d="M16 12h2a2 2 0 0 1 0 3h-2"></path><path d="M7 8h7"></path></svg>',
-            'ice': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7 12 2"></polygon><line x1="12" y1="2" x2="12" y2="22"></line></svg>',
-            'ice drink': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7 12 2"></polygon><line x1="12" y1="2" x2="12" y2="22"></line></svg>',
-            'iced drinks': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7 12 2"></polygon><line x1="12" y1="2" x2="12" y2="22"></line></svg>',
-            'soft drinks': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l-1 6v12a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8L8 2z"></path><path d="M10 8h4"></path></svg>',
-            'mojito': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l-2 7v7a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3v-7L6 3z"></path><path d="M14 2l2 3"></path></svg>',
-            'other': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l-2 7v7a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3v-7L6 3z"></path></svg>',
-            'other drink': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l-2 7v7a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3v-7L6 3z"></path></svg>',
-            'topping': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4-8 4-8-4 8-4z"></path><path d="M4 7v5l8 4 8-4V7"></path></svg>',
-            'hot drinks': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-5z"></path><path d="M16 11h2a2 2 0 0 1 0 4h-2"></path><path d="M8 3v3"></path><path d="M12 3v3"></path></svg>',
-            'breakfast': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><circle cx="12" cy="12" r="8"></circle></svg>',
-            'pasta & rice': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="16" rx="8" ry="4"></ellipse><path d="M4 16V9h16v7"></path></svg>',
-            'burger': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10a8 8 0 0 1 16 0H4z"></path><path d="M4 14h16"></path><path d="M6 18h12"></path></svg>',
-            'traditional dish': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 1 8 8h-8z"></path></svg>',
-            'fish': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-5 9-5 11 5 11 5-5 5-11 5-9-5-9-5z"></path><circle cx="14" cy="12" r="1"></circle></svg>',
-            'shewarma': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l12 8-12 8z"></path></svg>',
-            'shawarma & wrap': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l12 8-12 8z"></path></svg>',
-            'shawarma & wraps': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l12 8-12 8z"></path></svg>',
-            'rolls': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="16" height="10" rx="5"></rect><line x1="9" y1="7" x2="9" y2="17"></line><line x1="15" y1="7" x2="15" y2="17"></line></svg>',
-            'rolls sandwich': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="16" height="10" rx="5"></rect><line x1="9" y1="7" x2="9" y2="17"></line><line x1="15" y1="7" x2="15" y2="17"></line></svg>',
-            'sandwich': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="16" height="10" rx="5"></rect><line x1="9" y1="7" x2="9" y2="17"></line><line x1="15" y1="7" x2="15" y2="17"></line></svg>',
-            'chicken': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 14a5 5 0 1 1 7-7l5 5a3 3 0 0 1-4 4l-5-5a3 3 0 0 0-4 4z"></path></svg>',
-            'salad': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-6-4-6-10a6 6 0 0 1 12 0c0 6-6 10-6 10z"></path><line x1="12" y1="9" x2="12" y2="16"></line></svg>',
-            'soups': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11h11v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-4z"></path><path d="M16 12h2a2 2 0 0 1 0 3h-2"></path><path d="M7 8h7"></path></svg>',
-            'cakes': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="9" rx="1"></rect><path d="M8 10V7"></path><path d="M12 10V6"></path><path d="M16 10V7"></path></svg>',
-            'meat': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 14a5 5 0 1 1 7-7l5 5a3 3 0 0 1-4 4l-5-5a3 3 0 0 0-4 4z"></path></svg>',
-            'fasting': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-6-4-6-10a6 6 0 0 1 12 0c0 6-6 10-6 10z"></path><line x1="12" y1="9" x2="12" y2="16"></line></svg>',
-            'fasting menu': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-6-4-6-10a6 6 0 0 1 12 0c0 6-6 10-6 10z"></path><line x1="12" y1="9" x2="12" y2="16"></line></svg>',
-            'pizza': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6a18 18 0 0 1 18 0L12 21z"></path><circle cx="10" cy="12" r="1"></circle><circle cx="14" cy="10" r="1"></circle></svg>',
-            'extra': '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>'
+            'all types':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>',
+            juice: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l-1 6v12a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8L8 2z"></path><path d="M10 8h4"></path></svg>',
+            'normal juice':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l-1 6v12a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8L8 2z"></path><path d="M10 8h4"></path></svg>',
+            shake: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h10l-2 6v9a3 3 0 0 1-3 3h0a3 3 0 0 1-3-3V9L7 3z"></path><path d="M12 2v3"></path></svg>',
+            'shake juice':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h10l-2 6v9a3 3 0 0 1-3 3h0a3 3 0 0 1-3-3V9L7 3z"></path><path d="M12 2v3"></path></svg>',
+            coffee: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-5z"></path><path d="M16 11h2a2 2 0 0 1 0 4h-2"></path><path d="M8 3v3"></path><path d="M12 3v3"></path></svg>',
+            'coffee series':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-5z"></path><path d="M16 11h2a2 2 0 0 1 0 4h-2"></path><path d="M8 3v3"></path><path d="M12 3v3"></path></svg>',
+            tea: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11h11v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-4z"></path><path d="M16 12h2a2 2 0 0 1 0 3h-2"></path><path d="M7 8h7"></path></svg>',
+            'tea series':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11h11v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-4z"></path><path d="M16 12h2a2 2 0 0 1 0 3h-2"></path><path d="M7 8h7"></path></svg>',
+            ice: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7 12 2"></polygon><line x1="12" y1="2" x2="12" y2="22"></line></svg>',
+            'ice drink':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7 12 2"></polygon><line x1="12" y1="2" x2="12" y2="22"></line></svg>',
+            'iced drinks':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 20 7 20 17 12 22 4 17 4 7 12 2"></polygon><line x1="12" y1="2" x2="12" y2="22"></line></svg>',
+            'soft drinks':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2h8l-1 6v12a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8L8 2z"></path><path d="M10 8h4"></path></svg>',
+            mojito: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l-2 7v7a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3v-7L6 3z"></path><path d="M14 2l2 3"></path></svg>',
+            other: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l-2 7v7a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3v-7L6 3z"></path></svg>',
+            'other drink':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12l-2 7v7a3 3 0 0 1-3 3h-2a3 3 0 0 1-3-3v-7L6 3z"></path></svg>',
+            topping:
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4-8 4-8-4 8-4z"></path><path d="M4 7v5l8 4 8-4V7"></path></svg>',
+            'hot drinks':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-5z"></path><path d="M16 11h2a2 2 0 0 1 0 4h-2"></path><path d="M8 3v3"></path><path d="M12 3v3"></path></svg>',
+            breakfast:
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><circle cx="12" cy="12" r="8"></circle></svg>',
+            'pasta & rice':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="16" rx="8" ry="4"></ellipse><path d="M4 16V9h16v7"></path></svg>',
+            burger: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10a8 8 0 0 1 16 0H4z"></path><path d="M4 14h16"></path><path d="M6 18h12"></path></svg>',
+            'traditional dish':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"></circle><path d="M12 4a8 8 0 0 1 8 8h-8z"></path></svg>',
+            fish: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-5 9-5 11 5 11 5-5 5-11 5-9-5-9-5z"></path><circle cx="14" cy="12" r="1"></circle></svg>',
+            shewarma:
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l12 8-12 8z"></path></svg>',
+            'shawarma & wrap':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l12 8-12 8z"></path></svg>',
+            'shawarma & wraps':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l12 8-12 8z"></path></svg>',
+            rolls: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="16" height="10" rx="5"></rect><line x1="9" y1="7" x2="9" y2="17"></line><line x1="15" y1="7" x2="15" y2="17"></line></svg>',
+            'rolls sandwich':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="16" height="10" rx="5"></rect><line x1="9" y1="7" x2="9" y2="17"></line><line x1="15" y1="7" x2="15" y2="17"></line></svg>',
+            sandwich:
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="16" height="10" rx="5"></rect><line x1="9" y1="7" x2="9" y2="17"></line><line x1="15" y1="7" x2="15" y2="17"></line></svg>',
+            chicken:
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 14a5 5 0 1 1 7-7l5 5a3 3 0 0 1-4 4l-5-5a3 3 0 0 0-4 4z"></path></svg>',
+            salad: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-6-4-6-10a6 6 0 0 1 12 0c0 6-6 10-6 10z"></path><line x1="12" y1="9" x2="12" y2="16"></line></svg>',
+            soups: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11h11v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-4z"></path><path d="M16 12h2a2 2 0 0 1 0 3h-2"></path><path d="M7 8h7"></path></svg>',
+            cakes: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="9" rx="1"></rect><path d="M8 10V7"></path><path d="M12 10V6"></path><path d="M16 10V7"></path></svg>',
+            meat: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 14a5 5 0 1 1 7-7l5 5a3 3 0 0 1-4 4l-5-5a3 3 0 0 0-4 4z"></path></svg>',
+            fasting:
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-6-4-6-10a6 6 0 0 1 12 0c0 6-6 10-6 10z"></path><line x1="12" y1="9" x2="12" y2="16"></line></svg>',
+            'fasting menu':
+                '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-6-4-6-10a6 6 0 0 1 12 0c0 6-6 10-6 10z"></path><line x1="12" y1="9" x2="12" y2="16"></line></svg>',
+            pizza: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6a18 18 0 0 1 18 0L12 21z"></path><circle cx="10" cy="12" r="1"></circle><circle cx="14" cy="10" r="1"></circle></svg>',
+            extra: '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>',
         };
-        return iconMap[normalized] || '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>';
+        return (
+            iconMap[normalized] ||
+            '<svg class="chip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>'
+        );
     }
 
     function renderFilterChips() {
         if (!filterChips || !window.menuData || !window.menuData.products) return;
 
-        const categories = ['All Types', ...new Set(window.menuData.products.map(p => p.category).filter(Boolean))];
+        const categories = ['All Types', ...new Set(window.menuData.products.map((p) => p.category).filter(Boolean))];
 
-        filterChips.innerHTML = categories.map((cat, index) => `
+        filterChips.innerHTML = categories
+            .map(
+                (cat, index) => `
             <button class="filter-chip ${index === 0 ? 'active' : ''}" data-subcategory="${cat === 'All Types' ? 'all' : cat}">
                 ${getSubCategoryIcon(cat)} <span>${cat}</span>
             </button>
-        `).join('');
+        `,
+            )
+            .join('');
 
-        filterChips.querySelectorAll('.filter-chip').forEach(btn => {
+        filterChips.querySelectorAll('.filter-chip').forEach((btn) => {
             btn.addEventListener('click', handleFilterChipClick);
         });
     }
@@ -183,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('No menu data found');
             return;
         }
-        
+
         let filteredProducts = filterProducts();
 
         if (filteredProducts.length === 0) {
@@ -191,22 +228,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (noResults) noResults.classList.add('show');
         } else {
             if (noResults) noResults.classList.remove('show');
-            if (menuGrid) menuGrid.innerHTML = filteredProducts.map(product => createMenuCard(product)).join('');
+            if (menuGrid) menuGrid.innerHTML = filteredProducts.map((product) => createMenuCard(product)).join('');
         }
     }
 
     function filterProducts() {
         if (!window.menuData || !window.menuData.products) return [];
-        
-        const filtered = window.menuData.products.filter(product => {
+
+        const filtered = window.menuData.products.filter((product) => {
             if (product.available === false) return false;
-            
+
             const matchesCategory = currentCategory === 'all' || product.mainCategory === currentCategory;
-            const matchesSubCategory = currentSubCategory === 'all' ||
+            const matchesSubCategory =
+                currentSubCategory === 'all' ||
                 product.subCategory === currentSubCategory ||
                 product.category === currentSubCategory;
-            const matchesSearch = searchQuery === '' ||
-                product.name.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesSearch = searchQuery === '' || product.name.toLowerCase().includes(searchQuery.toLowerCase());
 
             return matchesCategory && matchesSubCategory && matchesSearch;
         });
@@ -218,26 +255,46 @@ document.addEventListener('DOMContentLoaded', function() {
         const sorted = [...products];
         sorted.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
         if (currentSort === 'name_asc') {
-            sorted.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (a.name || '').localeCompare(b.name || ''));
+            sorted.sort(
+                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (a.name || '').localeCompare(b.name || ''),
+            );
         } else if (currentSort === 'name_desc') {
-            sorted.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (b.name || '').localeCompare(a.name || ''));
+            sorted.sort(
+                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (b.name || '').localeCompare(a.name || ''),
+            );
         } else if (currentSort === 'price_asc') {
-            sorted.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (Number(a.price) || 0) - (Number(b.price) || 0));
+            sorted.sort(
+                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (Number(a.price) || 0) - (Number(b.price) || 0),
+            );
         } else if (currentSort === 'price_desc') {
-            sorted.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (Number(b.price) || 0) - (Number(a.price) || 0));
+            sorted.sort(
+                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (Number(b.price) || 0) - (Number(a.price) || 0),
+            );
         } else if (currentSort === 'newest') {
-            sorted.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0));
+            sorted.sort(
+                (a, b) =>
+                    (a.sortOrder || 0) - (b.sortOrder || 0) ||
+                    new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0),
+            );
         } else if (currentSort === 'oldest') {
-            sorted.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || new Date(a.updatedAt || a.createdAt || 0) - new Date(b.updatedAt || b.createdAt || 0));
+            sorted.sort(
+                (a, b) =>
+                    (a.sortOrder || 0) - (b.sortOrder || 0) ||
+                    new Date(a.updatedAt || a.createdAt || 0) - new Date(b.updatedAt || b.createdAt || 0),
+            );
         }
         return sorted;
     }
 
     function createMenuCard(product) {
         const displayName = currentLang === 'am' && product.name_am ? product.name_am : product.name;
-        const displayCategory = currentLang === 'am' && product.category_am ? product.category_am : (product.category || product.mainCategory);
-        const displayDesc = currentLang === 'am' && product.description_am ? product.description_am : product.description;
-        
+        const displayCategory =
+            currentLang === 'am' && product.category_am
+                ? product.category_am
+                : product.category || product.mainCategory;
+        const displayDesc =
+            currentLang === 'am' && product.description_am ? product.description_am : product.description;
+
         return `
             <div class="menu-card">
                 <img src="${product.image}" alt="${displayName}" onerror="this.src='https://via.placeholder.com/170?text=' + encodeURIComponent('${displayName}')">
@@ -260,7 +317,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        paymentCards.innerHTML = window.menuData.payment.map(p => `
+        paymentCards.innerHTML = window.menuData.payment
+            .map(
+                (p) => `
             <div class="payment-card">
                 <h3>${p.method}</h3>
                 <p class="payment-type">${p.type}</p>
@@ -271,7 +330,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p class="account-number">${p.account}</p><button class="copy-btn" data-copy="${p.account}">Copy</button>
                 </div>
             </div>
-        `).join('');
+        `,
+            )
+            .join('');
     }
 
     function initEventListeners() {
@@ -283,18 +344,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileMenu.classList.toggle('active');
             });
 
-            mobileMenu.querySelectorAll('a').forEach(link => {
+            mobileMenu.querySelectorAll('a').forEach((link) => {
                 link.addEventListener('click', () => {
                     mobileMenu.classList.remove('active');
                 });
             });
         }
 
-        document.querySelectorAll('.category-icon').forEach(btn => {
+        document.querySelectorAll('.category-icon').forEach((btn) => {
             btn.addEventListener('click', handleCategoryIconClick);
         });
 
-        document.querySelectorAll('.view-btn').forEach(btn => {
+        document.querySelectorAll('.view-btn').forEach((btn) => {
             btn.addEventListener('click', handleViewClick);
         });
 
@@ -305,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sortSelect.addEventListener('change', handleSortChange);
         }
 
-        document.querySelectorAll('.copy-btn').forEach(btn => {
+        document.querySelectorAll('.copy-btn').forEach((btn) => {
             btn.addEventListener('click', handleCopy);
         });
 
@@ -322,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
                 if (href && href !== '#') {
@@ -338,12 +399,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleCategoryIconClick(e) {
         const btn = e.currentTarget;
-        document.querySelectorAll('.category-icon').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.category-icon').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
         currentCategory = btn.dataset.category;
 
         currentSubCategory = 'all';
-        document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-chip').forEach((b) => b.classList.remove('active'));
         const allChip = document.querySelector('.filter-chip[data-subcategory="all"]');
         if (allChip) allChip.classList.add('active');
 
@@ -352,7 +413,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleFilterChipClick(e) {
         const btn = e.currentTarget;
-        document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-chip').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
         currentSubCategory = btn.dataset.subcategory;
         renderMenu();
@@ -360,7 +421,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleViewClick(e) {
         const btn = e.currentTarget;
-        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.view-btn').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
         currentView = btn.dataset.view;
         if (menuGrid) {
@@ -399,7 +460,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = new FormData(form);
 
         const reviews = JSON.parse(localStorage.getItem(DB_KEYS.REVIEWS) || '[]');
-        
+
         const review = {
             id: reviews.length + 1,
             name: formData.get('name'),
@@ -412,7 +473,7 @@ document.addEventListener('DOMContentLoaded', function() {
             source: formData.get('source'),
             first_visit: formData.get('first_visit') === 'on',
             contact: formData.get('contact') === 'on',
-            date: new Date().toISOString()
+            date: new Date().toISOString(),
         };
 
         reviews.push(review);

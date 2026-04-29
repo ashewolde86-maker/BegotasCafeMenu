@@ -5,7 +5,7 @@ const ADMIN_ACCOUNTS_KEY = 'begotas_admin_accounts';
 const CURRENT_ADMIN_USER_KEY = 'begotas_admin_current_user';
 const DEFAULT_ADMIN_ACCOUNT = {
     username: 'admin',
-    password: 'Admin@123'
+    password: 'Admin@123',
 };
 
 const PAGE_PERMISSIONS = {
@@ -18,7 +18,7 @@ const PAGE_PERMISSIONS = {
     settings: 'settings',
     Reports: 'Reports',
     CreateAccount: 'CreateAccount',
-    QRGenerator: 'QRGenerator'
+    QRGenerator: 'QRGenerator',
 };
 
 let dashboardInitialized = false;
@@ -29,11 +29,11 @@ let currentEditingItem = null;
 let currentEditType = null;
 let currentEditId = null;
 const LEGACY_CATEGORY_RENAMES = {
-    'Breakfast': 'Pasta & Rice',
-    'Shewarma': 'Shawarma & Wrap',
+    Breakfast: 'Pasta & Rice',
+    Shewarma: 'Shawarma & Wrap',
     'Rolls Sandwich': 'Sandwich',
-    'Rolls': 'Sandwich',
-    'Topping': 'Hot Drinks'
+    Rolls: 'Sandwich',
+    Topping: 'Hot Drinks',
 };
 
 function getCategoryIconSvg(category) {
@@ -55,10 +55,10 @@ function updateCategorySelectIcons() {
         { selectId: 'categoryMainFilter', iconId: 'categoryMainFilterIcon' },
         { selectId: 'itemMainCategory', iconId: 'itemMainCategoryIcon' },
         { selectId: 'specialMainCategory', iconId: 'specialMainCategoryIcon' },
-        { selectId: 'categoryMainCategory', iconId: 'categoryMainCategoryIcon' }
+        { selectId: 'categoryMainCategory', iconId: 'categoryMainCategoryIcon' },
     ];
 
-    iconBindings.forEach(binding => {
+    iconBindings.forEach((binding) => {
         const select = document.getElementById(binding.selectId);
         const iconWrap = document.getElementById(binding.iconId);
         if (!select || !iconWrap) return;
@@ -67,18 +67,23 @@ function updateCategorySelectIcons() {
 }
 
 function setupCategorySelectIcons() {
-    ['menuCategoryFilter', 'categoryMainFilter', 'itemMainCategory', 'specialMainCategory', 'categoryMainCategory']
-        .forEach(id => {
-            const select = document.getElementById(id);
-            if (!select) return;
-            select.addEventListener('change', updateCategorySelectIcons);
-            if (id === 'menuCategoryFilter') {
-                select.addEventListener('change', () => {
-                    populateMenuSubCategoryFilter();
-                    filterMenu();
-                });
-            }
-        });
+    [
+        'menuCategoryFilter',
+        'categoryMainFilter',
+        'itemMainCategory',
+        'specialMainCategory',
+        'categoryMainCategory',
+    ].forEach((id) => {
+        const select = document.getElementById(id);
+        if (!select) return;
+        select.addEventListener('change', updateCategorySelectIcons);
+        if (id === 'menuCategoryFilter') {
+            select.addEventListener('change', () => {
+                populateMenuSubCategoryFilter();
+                filterMenu();
+            });
+        }
+    });
     updateCategorySelectIcons();
 }
 
@@ -132,8 +137,8 @@ function migrateLegacyAccountToAccountsList() {
             password: legacy.password,
             role: 'owner',
             permissions: ['*'],
-            createdAt: new Date().toISOString()
-        }
+            createdAt: new Date().toISOString(),
+        },
     ]);
 }
 
@@ -166,7 +171,7 @@ function showLoginScreen() {
 }
 
 function applyPermissionVisibility() {
-    document.querySelectorAll('.nav-item').forEach(item => {
+    document.querySelectorAll('.nav-item').forEach((item) => {
         const pageId = item.dataset.page;
         const permission = PAGE_PERMISSIONS[pageId];
         if (!permission) return;
@@ -175,7 +180,7 @@ function applyPermissionVisibility() {
 }
 
 function redirectToFirstAllowedPage() {
-    const firstAllowed = Object.keys(PAGE_PERMISSIONS).find(page => canAccess(PAGE_PERMISSIONS[page]));
+    const firstAllowed = Object.keys(PAGE_PERMISSIONS).find((page) => canAccess(PAGE_PERMISSIONS[page]));
     if (firstAllowed) {
         showPage(firstAllowed);
     }
@@ -191,7 +196,7 @@ function initLogin() {
         const password = document.getElementById('adminPassword')?.value;
         const accounts = getAccounts();
         const errorEl = document.getElementById('loginError');
-        const matchedAccount = accounts.find(acc => acc.username === username && acc.password === password);
+        const matchedAccount = accounts.find((acc) => acc.username === username && acc.password === password);
 
         if (matchedAccount) {
             currentAdminUser = matchedAccount;
@@ -280,7 +285,7 @@ function changeAdminPassword() {
     }
 
     const accounts = getAccounts();
-    const accountIndex = accounts.findIndex(a => a.id === currentAdminUser.id);
+    const accountIndex = accounts.findIndex((a) => a.id === currentAdminUser.id);
     if (accountIndex === -1) {
         alert('Current account no longer exists.');
         return;
@@ -292,10 +297,13 @@ function changeAdminPassword() {
     localStorage.setItem(CURRENT_ADMIN_USER_KEY, JSON.stringify(currentAdminUser));
 
     if (accounts[accountIndex].permissions?.includes('*')) {
-        localStorage.setItem(ADMIN_CREDENTIALS_KEY, JSON.stringify({
-            username: accounts[accountIndex].username,
-            password: newPassword
-        }));
+        localStorage.setItem(
+            ADMIN_CREDENTIALS_KEY,
+            JSON.stringify({
+                username: accounts[accountIndex].username,
+                password: newPassword,
+            }),
+        );
     }
 
     currentPasswordInput.value = '';
@@ -336,7 +344,7 @@ function renameCategoryValue(value) {
 function migrateLegacyCategoryNames() {
     let changedProducts = false;
     let products = getData(DB_KEYS.PRODUCTS);
-    products = products.map(item => {
+    products = products.map((item) => {
         const newCategory = renameCategoryValue(item.category);
         const newSubCategory = renameCategoryValue(item.subCategory);
         if (newCategory !== item.category || newSubCategory !== item.subCategory) {
@@ -344,7 +352,7 @@ function migrateLegacyCategoryNames() {
             return {
                 ...item,
                 category: newCategory,
-                subCategory: newSubCategory
+                subCategory: newSubCategory,
             };
         }
         return item;
@@ -355,7 +363,7 @@ function migrateLegacyCategoryNames() {
 
     let changedSubcategories = false;
     let subcategories = getData(DB_KEYS.SUBCATEGORIES);
-    subcategories = subcategories.map(item => {
+    subcategories = subcategories.map((item) => {
         const newName = renameCategoryValue(item.name);
         if (newName !== item.name) {
             changedSubcategories = true;
@@ -380,7 +388,7 @@ function saveData(key, data) {
 function generateId(key) {
     const data = getData(key);
     if (data.length === 0) return 1;
-    return Math.max(...data.map(item => item.id)) + 1;
+    return Math.max(...data.map((item) => item.id)) + 1;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -409,29 +417,29 @@ function showPage(pageId) {
         return;
     }
 
-    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    document.querySelectorAll('.page').forEach((page) => page.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
 
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach((item) => item.classList.remove('active'));
     document.querySelector(`[data-page="${pageId}"]`)?.classList.add('active');
 
     const titles = {
-        'dashboard': 'Dashboard',
-        'menu': 'Menu Items',
-        'specials': 'Special Products',
-        'categories': 'Sub Categories',
-        'payment': 'Payment Info',
-        'reviews': 'Reviews',
-        'settings': 'Settings',
-        'Reports': 'Reports',
-        'QRGenerator': 'QR Generator',
-        'CreateAccount': 'Create Account'
+        dashboard: 'Dashboard',
+        menu: 'Menu Items',
+        specials: 'Special Products',
+        categories: 'Sub Categories',
+        payment: 'Payment Info',
+        reviews: 'Reviews',
+        settings: 'Settings',
+        Reports: 'Reports',
+        QRGenerator: 'QR Generator',
+        CreateAccount: 'Create Account',
     };
     document.getElementById('pageTitle').textContent = titles[pageId] || 'Dashboard';
 }
 
 function initNavigation() {
-    document.querySelectorAll('.nav-item').forEach(item => {
+    document.querySelectorAll('.nav-item').forEach((item) => {
         item.addEventListener('click', function (e) {
             e.preventDefault();
             showPage(this.dataset.page);
@@ -463,10 +471,11 @@ function populateSubCategoryDropdown() {
     const categories = getData(DB_KEYS.SUBCATEGORIES);
     const mainCategory = document.getElementById('itemMainCategory')?.value || '';
 
-    let filteredCategories = mainCategory ? categories.filter(c => c.mainCategory === mainCategory) : categories;
+    let filteredCategories = mainCategory ? categories.filter((c) => c.mainCategory === mainCategory) : categories;
 
-    select.innerHTML = '<option value="">Select Sub Category</option>' +
-        filteredCategories.map(cat => `<option value="${cat.name}">${cat.name}</option>`).join('');
+    select.innerHTML =
+        '<option value="">Select Sub Category</option>' +
+        filteredCategories.map((cat) => `<option value="${cat.name}">${cat.name}</option>`).join('');
 }
 
 function populateMenuSubCategoryFilter() {
@@ -476,10 +485,11 @@ function populateMenuSubCategoryFilter() {
     const categories = getData(DB_KEYS.SUBCATEGORIES);
     const mainCategory = document.getElementById('menuCategoryFilter')?.value || '';
 
-    let filteredCategories = mainCategory ? categories.filter(c => c.mainCategory === mainCategory) : categories;
+    let filteredCategories = mainCategory ? categories.filter((c) => c.mainCategory === mainCategory) : categories;
 
-    select.innerHTML = '<option value="">All Sub Categories</option>' +
-        filteredCategories.map(cat => `<option value="${cat.name}">${cat.name}</option>`).join('');
+    select.innerHTML =
+        '<option value="">All Sub Categories</option>' +
+        filteredCategories.map((cat) => `<option value="${cat.name}">${cat.name}</option>`).join('');
 }
 
 function loadMenuItems() {
@@ -487,9 +497,10 @@ function loadMenuItems() {
     const tbody = document.getElementById('menuTableBody');
     if (!tbody) return;
 
-    tbody.innerHTML = products.map(product => {
-        const isAvailable = product.available !== false;
-        return `
+    tbody.innerHTML = products
+        .map((product) => {
+            const isAvailable = product.available !== false;
+            return `
         <tr>
             <td><img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/60'"></td>
             <td>${product.name}</td>
@@ -510,7 +521,9 @@ function loadMenuItems() {
                 </div>
             </td>
         </tr>
-    `}).join('');
+    `;
+        })
+        .join('');
 
     if (document.getElementById('totalProducts')) {
         document.getElementById('totalProducts').textContent = products.length;
@@ -519,20 +532,20 @@ function loadMenuItems() {
 
 function toggleProductStatus(productId) {
     if (!ensurePermission('menu')) return;
-    
+
     const key = DB_KEYS.PRODUCTS;
     const data = getData(key);
-    const index = data.findIndex(p => p.id === productId);
-    
+    const index = data.findIndex((p) => p.id === productId);
+
     if (index === -1) {
         alert('Product not found.');
         return;
     }
-    
+
     const currentStatus = data[index].available !== false;
     data[index].available = !currentStatus;
     data[index].updatedAt = new Date().toISOString();
-    
+
     saveData(key, data);
     loadMenuItems();
     loadDashboard();
@@ -543,9 +556,10 @@ function loadSpecials() {
     const tbody = document.getElementById('specialsTableBody');
     if (!tbody) return;
 
-    tbody.innerHTML = specials.map(special => {
-        const isAvailable = special.available !== false;
-        return `
+    tbody.innerHTML = specials
+        .map((special) => {
+            const isAvailable = special.available !== false;
+            return `
         <tr>
             <td><img src="${special.image}" alt="${special.name}" onerror="this.src='https://via.placeholder.com/60'"></td>
             <td>${special.name}</td>
@@ -564,7 +578,9 @@ function loadSpecials() {
                 </div>
             </td>
         </tr>
-    `}).join('');
+    `;
+        })
+        .join('');
 
     if (document.getElementById('totalSpecials')) {
         document.getElementById('totalSpecials').textContent = specials.length;
@@ -573,20 +589,20 @@ function loadSpecials() {
 
 function toggleSpecialStatus(specialId) {
     if (!ensurePermission('specials')) return;
-    
+
     const key = DB_KEYS.SPECIALS;
     const data = getData(key);
-    const index = data.findIndex(s => s.id === specialId);
-    
+    const index = data.findIndex((s) => s.id === specialId);
+
     if (index === -1) {
         alert('Special product not found.');
         return;
     }
-    
+
     const currentStatus = data[index].available !== false;
     data[index].available = !currentStatus;
     data[index].updatedAt = new Date().toISOString();
-    
+
     saveData(key, data);
     loadSpecials();
     loadDashboard();
@@ -597,7 +613,9 @@ function loadPayment() {
     const tbody = document.getElementById('paymentTableBody');
     if (!tbody) return;
 
-    tbody.innerHTML = payment.map(p => `
+    tbody.innerHTML = payment
+        .map(
+            (p) => `
         <tr>
             <td>${p.method}</td>
             <td>${p.type}</td>
@@ -610,7 +628,9 @@ function loadPayment() {
                 </div>
             </td>
         </tr>
-    `).join('');
+    `,
+        )
+        .join('');
 
     if (document.getElementById('totalPayment')) {
         document.getElementById('totalPayment').textContent = payment.length;
@@ -622,7 +642,9 @@ function loadCategories() {
     const tbody = document.getElementById('categoriesTableBody');
     if (!tbody) return;
 
-    tbody.innerHTML = categories.map(cat => `
+    tbody.innerHTML = categories
+        .map(
+            (cat) => `
         <tr>
             <td>${cat.name}</td>
             <td>${cat.name_am || '-'}</td>
@@ -634,7 +656,9 @@ function loadCategories() {
                 </div>
             </td>
         </tr>
-    `).join('');
+    `,
+        )
+        .join('');
 }
 
 function loadReviews() {
@@ -647,7 +671,9 @@ function loadReviews() {
         return;
     }
 
-    grid.innerHTML = reviews.map(review => `
+    grid.innerHTML = reviews
+        .map(
+            (review) => `
         <div class="review-card">
             <div class="review-header">
                 <span class="review-name">${review.name || 'Anonymous'}</span>
@@ -660,7 +686,9 @@ function loadReviews() {
             </div>
             <p class="review-comment">${review.comments || 'No comment'}</p>
         </div>
-    `).join('');
+    `,
+        )
+        .join('');
 
     if (document.getElementById('totalReviews')) {
         document.getElementById('totalReviews').textContent = reviews.length;
@@ -690,7 +718,9 @@ function loadAccounts() {
     if (!tbody) return;
 
     const accounts = getAccounts();
-    tbody.innerHTML = accounts.map(account => `
+    tbody.innerHTML = accounts
+        .map(
+            (account) => `
         <tr>
             <td>${account.username}</td>
             <td>${account.role || 'staff'}</td>
@@ -702,13 +732,15 @@ function loadAccounts() {
                 </div>
             </td>
         </tr>
-    `).join('');
+    `,
+        )
+        .join('');
 }
 
 function startEditAccount(accountId) {
     if (!ensurePermission('CreateAccount')) return;
 
-    const account = getAccounts().find(acc => acc.id === accountId);
+    const account = getAccounts().find((acc) => acc.id === accountId);
     if (!account) {
         alert('Account not found.');
         return;
@@ -728,7 +760,7 @@ function startEditAccount(accountId) {
 
     const permissions = account.permissions || [];
     const isSuperOwner = permissions.includes('*');
-    document.querySelectorAll('.edit-permission-checkbox').forEach(cb => {
+    document.querySelectorAll('.edit-permission-checkbox').forEach((cb) => {
         cb.checked = isSuperOwner || permissions.includes(cb.value);
         cb.disabled = isSuperOwner;
     });
@@ -745,7 +777,7 @@ function cancelEditAccount() {
     if (idEl) idEl.value = '';
     if (userEl) userEl.value = '';
     if (passwordEl) passwordEl.value = '';
-    document.querySelectorAll('.edit-permission-checkbox').forEach(cb => {
+    document.querySelectorAll('.edit-permission-checkbox').forEach((cb) => {
         cb.checked = false;
         cb.disabled = false;
     });
@@ -764,7 +796,9 @@ function saveEditedAccount() {
     const newUsername = userEl.value.trim();
     const newPassword = passwordEl.value;
     const newRole = roleEl.value;
-    const selectedPermissions = Array.from(document.querySelectorAll('.edit-permission-checkbox:checked')).map(cb => cb.value);
+    const selectedPermissions = Array.from(document.querySelectorAll('.edit-permission-checkbox:checked')).map(
+        (cb) => cb.value,
+    );
 
     if (!newUsername) {
         alert('Username is required.');
@@ -776,7 +810,7 @@ function saveEditedAccount() {
     }
 
     const accounts = getAccounts();
-    const index = accounts.findIndex(acc => acc.id === accountId);
+    const index = accounts.findIndex((acc) => acc.id === accountId);
     if (index === -1) {
         alert('Account not found.');
         return;
@@ -784,8 +818,8 @@ function saveEditedAccount() {
 
     const targetAccount = accounts[index];
     const isSuperOwner = (targetAccount.permissions || []).includes('*');
-    const usernameTaken = accounts.some(acc =>
-        acc.id !== accountId && acc.username.toLowerCase() === newUsername.toLowerCase()
+    const usernameTaken = accounts.some(
+        (acc) => acc.id !== accountId && acc.username.toLowerCase() === newUsername.toLowerCase(),
     );
     if (usernameTaken) {
         alert('Username already exists.');
@@ -807,10 +841,13 @@ function saveEditedAccount() {
     }
 
     if ((targetAccount.permissions || []).includes('*')) {
-        localStorage.setItem(ADMIN_CREDENTIALS_KEY, JSON.stringify({
-            username: targetAccount.username,
-            password: targetAccount.password
-        }));
+        localStorage.setItem(
+            ADMIN_CREDENTIALS_KEY,
+            JSON.stringify({
+                username: targetAccount.username,
+                password: targetAccount.password,
+            }),
+        );
     }
 
     loadAccounts();
@@ -830,7 +867,7 @@ function createAdminAccount() {
     const username = usernameEl.value.trim();
     const password = passwordEl.value;
     const role = roleEl.value;
-    const permissions = Array.from(document.querySelectorAll('.permission-checkbox:checked')).map(cb => cb.value);
+    const permissions = Array.from(document.querySelectorAll('.permission-checkbox:checked')).map((cb) => cb.value);
 
     if (!username || !password) {
         alert('Username and password are required.');
@@ -842,7 +879,7 @@ function createAdminAccount() {
     }
 
     const accounts = getAccounts();
-    if (accounts.some(acc => acc.username.toLowerCase() === username.toLowerCase())) {
+    if (accounts.some((acc) => acc.username.toLowerCase() === username.toLowerCase())) {
         alert('Username already exists.');
         return;
     }
@@ -853,14 +890,14 @@ function createAdminAccount() {
         password,
         role,
         permissions: permissions.length > 0 ? permissions : ['dashboard'],
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
     });
     saveAccounts(accounts);
     loadAccounts();
 
     usernameEl.value = '';
     passwordEl.value = '';
-    document.querySelectorAll('.permission-checkbox').forEach(cb => {
+    document.querySelectorAll('.permission-checkbox').forEach((cb) => {
         cb.checked = cb.value === 'dashboard';
     });
     alert('Account created successfully.');
@@ -870,7 +907,7 @@ function deleteAdminAccount(accountId) {
     if (!ensurePermission('CreateAccount')) return;
     if (!confirm('Delete this account?')) return;
 
-    const target = getAccounts().find(acc => acc.id === accountId);
+    const target = getAccounts().find((acc) => acc.id === accountId);
     if (target?.permissions?.includes('*')) {
         alert('Owner account cannot be deleted.');
         return;
@@ -880,7 +917,7 @@ function deleteAdminAccount(accountId) {
         return;
     }
 
-    const accounts = getAccounts().filter(acc => acc.id !== accountId);
+    const accounts = getAccounts().filter((acc) => acc.id !== accountId);
     saveAccounts(accounts);
     loadAccounts();
 }
@@ -892,10 +929,10 @@ function addItem(type) {
     currentEditId = null;
 
     const typeLabels = {
-        'menu': 'Product',
-        'specials': 'Special',
-        'categories': 'Category',
-        'payment': 'Payment'
+        menu: 'Product',
+        specials: 'Special',
+        categories: 'Category',
+        payment: 'Payment',
     };
     document.getElementById('modalTitle').textContent = `Add ${typeLabels[type] || 'Item'}`;
 
@@ -920,19 +957,19 @@ function editItem(type, id) {
     if (type === 'menu') {
         key = DB_KEYS.PRODUCTS;
         data = getData(key);
-        item = data.find(p => p.id === id);
+        item = data.find((p) => p.id === id);
     } else if (type === 'specials') {
         key = DB_KEYS.SPECIALS;
         data = getData(key);
-        item = data.find(s => s.id === id);
+        item = data.find((s) => s.id === id);
     } else if (type === 'categories') {
         key = DB_KEYS.SUBCATEGORIES;
         data = getData(key);
-        item = data.find(c => c.id === id);
+        item = data.find((c) => c.id === id);
     } else if (type === 'payment') {
         key = DB_KEYS.PAYMENT;
         data = getData(key);
-        item = data.find(p => p.id === id);
+        item = data.find((p) => p.id === id);
     }
 
     if (!item) return;
@@ -942,10 +979,10 @@ function editItem(type, id) {
     currentEditId = id;
 
     const typeLabels = {
-        'menu': 'Product',
-        'specials': 'Special',
-        'categories': 'Category',
-        'payment': 'Payment'
+        menu: 'Product',
+        specials: 'Special',
+        categories: 'Category',
+        payment: 'Payment',
     };
     document.getElementById('modalTitle').textContent = `Edit ${typeLabels[type] || 'Item'}`;
 
@@ -964,7 +1001,8 @@ function editItem(type, id) {
         if (item.image) {
             const preview = document.getElementById('itemImagePreview');
             if (preview) {
-                preview.innerHTML = '<img src="' + item.image + '" alt="Preview" onclick="clearImagePreview(\'itemImage\')">';
+                preview.innerHTML =
+                    '<img src="' + item.image + '" alt="Preview" onclick="clearImagePreview(\'itemImage\')">';
                 preview.title = 'Click to remove';
                 preview.classList.add('has-image');
             }
@@ -982,7 +1020,8 @@ function editItem(type, id) {
         if (item.image) {
             const preview = document.getElementById('specialImagePreview');
             if (preview) {
-                preview.innerHTML = '<img src="' + item.image + '" alt="Preview" onclick="clearImagePreview(\'specialImage\')">';
+                preview.innerHTML =
+                    '<img src="' + item.image + '" alt="Preview" onclick="clearImagePreview(\'specialImage\')">';
                 preview.title = 'Click to remove';
                 preview.classList.add('has-image');
             }
@@ -1013,7 +1052,7 @@ function saveItem() {
         data = getData(key);
 
         if (currentEditingItem) {
-            const index = data.findIndex(p => p.id === currentEditId);
+            const index = data.findIndex((p) => p.id === currentEditId);
             const subCat = document.getElementById('itemSubCategory').value;
             data[index] = {
                 ...data[index],
@@ -1028,7 +1067,7 @@ function saveItem() {
                 category: subCat || document.getElementById('itemMainCategory').value,
                 available: data[index].available !== false,
                 sortOrder: parseInt(document.getElementById('itemSortOrder').value) || 0,
-                updatedAt: nowIso
+                updatedAt: nowIso,
             };
         } else {
             newItem = {
@@ -1041,11 +1080,13 @@ function saveItem() {
                 image: document.getElementById('itemImage').value || 'https://via.placeholder.com/170',
                 mainCategory: document.getElementById('itemMainCategory').value,
                 subCategory: document.getElementById('itemSubCategory').value,
-                category: document.getElementById('itemSubCategory').value || document.getElementById('itemMainCategory').value,
+                category:
+                    document.getElementById('itemSubCategory').value ||
+                    document.getElementById('itemMainCategory').value,
                 available: true,
                 sortOrder: parseInt(document.getElementById('itemSortOrder').value) || 0,
                 createdAt: nowIso,
-                updatedAt: nowIso
+                updatedAt: nowIso,
             };
             data.push(newItem);
         }
@@ -1054,7 +1095,7 @@ function saveItem() {
         data = getData(key);
 
         if (currentEditingItem) {
-            const index = data.findIndex(s => s.id === currentEditId);
+            const index = data.findIndex((s) => s.id === currentEditId);
             data[index] = {
                 ...data[index],
                 name: document.getElementById('specialName').value,
@@ -1064,9 +1105,9 @@ function saveItem() {
                 price: parseFloat(document.getElementById('specialPrice').value),
                 image: document.getElementById('specialImage').value || 'https://via.placeholder.com/400',
                 mainCategory: document.getElementById('specialMainCategory').value,
-                category: "Special",
+                category: 'Special',
                 available: data[index].available !== false,
-                updatedAt: nowIso
+                updatedAt: nowIso,
             };
         } else {
             newItem = {
@@ -1078,10 +1119,10 @@ function saveItem() {
                 price: parseFloat(document.getElementById('specialPrice').value),
                 image: document.getElementById('specialImage').value || 'https://via.placeholder.com/400',
                 mainCategory: document.getElementById('specialMainCategory').value,
-                category: "Special",
+                category: 'Special',
                 available: true,
                 createdAt: nowIso,
-                updatedAt: nowIso
+                updatedAt: nowIso,
             };
             data.push(newItem);
         }
@@ -1094,13 +1135,13 @@ function saveItem() {
         const newMainCat = document.getElementById('categoryMainCategory').value;
 
         if (currentEditingItem) {
-            const index = data.findIndex(c => c.id === currentEditId);
+            const index = data.findIndex((c) => c.id === currentEditId);
             data[index] = {
                 ...data[index],
                 name: newName,
                 name_am: document.getElementById('categoryNameAm').value,
                 mainCategory: newMainCat,
-                updatedAt: nowIso
+                updatedAt: nowIso,
             };
 
             if (oldName && oldName !== newName) {
@@ -1113,7 +1154,7 @@ function saveItem() {
                 name_am: document.getElementById('categoryNameAm').value,
                 mainCategory: document.getElementById('categoryMainCategory').value,
                 createdAt: nowIso,
-                updatedAt: nowIso
+                updatedAt: nowIso,
             };
             data.push(newItem);
         }
@@ -1122,14 +1163,14 @@ function saveItem() {
         data = getData(key);
 
         if (currentEditingItem) {
-            const index = data.findIndex(p => p.id === currentEditId);
+            const index = data.findIndex((p) => p.id === currentEditId);
             data[index] = {
                 ...data[index],
                 method: document.getElementById('paymentMethod').value,
                 type: document.getElementById('paymentType').value,
                 holder: document.getElementById('paymentHolder').value,
                 account: document.getElementById('paymentAccount').value,
-                updatedAt: nowIso
+                updatedAt: nowIso,
             };
         } else {
             newItem = {
@@ -1139,7 +1180,7 @@ function saveItem() {
                 holder: document.getElementById('paymentHolder').value,
                 account: document.getElementById('paymentAccount').value,
                 createdAt: nowIso,
-                updatedAt: nowIso
+                updatedAt: nowIso,
             };
             data.push(newItem);
         }
@@ -1168,13 +1209,13 @@ function deleteItem(type, id) {
     let data = getData(key);
 
     if (type === 'categories') {
-        const categoryToDelete = data.find(c => c.id === id);
+        const categoryToDelete = data.find((c) => c.id === id);
         if (categoryToDelete) {
             clearProductsSubCategory(categoryToDelete.name);
         }
     }
 
-    data = data.filter(item => item.id !== id);
+    data = data.filter((item) => item.id !== id);
     saveData(key, data);
 
     loadMenuItems();
@@ -1189,13 +1230,13 @@ function clearProductsSubCategory(categoryName) {
     let products = getData(DB_KEYS.PRODUCTS);
     let updated = false;
 
-    products = products.map(p => {
+    products = products.map((p) => {
         if (p.subCategory === categoryName) {
             updated = true;
             return {
                 ...p,
                 subCategory: '',
-                category: p.mainCategory || ''
+                category: p.mainCategory || '',
             };
         }
         return p;
@@ -1218,7 +1259,7 @@ function closeModal() {
 function saveSettings() {
     if (!ensurePermission('settings')) return;
     const settings = {
-        menuUrl: document.getElementById('menuUrl').value
+        menuUrl: document.getElementById('menuUrl').value,
     };
     saveData(DB_KEYS.SETTINGS, settings);
     alert('Settings saved!');
@@ -1232,7 +1273,7 @@ function saveRestaurantInfo() {
         tagline: document.getElementById('restaurantTagline').value,
         address: document.getElementById('restaurantAddress').value,
         phone: document.getElementById('restaurantPhone').value,
-        hours: document.getElementById('restaurantHours').value
+        hours: document.getElementById('restaurantHours').value,
     };
     saveData(DB_KEYS.RESTAURANT, restaurant);
     alert('Restaurant info saved!');
@@ -1247,7 +1288,7 @@ function exportData() {
         reviews: getData(DB_KEYS.REVIEWS),
         settings: getData(DB_KEYS.SETTINGS),
         restaurant: getData(DB_KEYS.RESTAURANT),
-        subCategories: getData(DB_KEYS.SUBCATEGORIES)
+        subCategories: getData(DB_KEYS.SUBCATEGORIES),
     };
 
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1308,19 +1349,19 @@ function filterMenu() {
     let products = getData(DB_KEYS.PRODUCTS);
 
     if (category) {
-        products = products.filter(p => p.mainCategory === category);
+        products = products.filter((p) => p.mainCategory === category);
     }
     if (subCategory) {
-        products = products.filter(p => p.subCategory === subCategory);
+        products = products.filter((p) => p.subCategory === subCategory);
     }
     if (search) {
-        products = products.filter(p => p.name.toLowerCase().includes(search));
+        products = products.filter((p) => p.name.toLowerCase().includes(search));
     }
     if (minPrice > 0) {
-        products = products.filter(p => p.price >= minPrice);
+        products = products.filter((p) => p.price >= minPrice);
     }
     if (maxPrice < Infinity) {
-        products = products.filter(p => p.price <= maxPrice);
+        products = products.filter((p) => p.price <= maxPrice);
     }
 
     products = products.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
@@ -1330,9 +1371,10 @@ function filterMenu() {
     const tbody = document.getElementById('menuTableBody');
     if (!tbody) return;
 
-    tbody.innerHTML = products.map(product => {
-        const isAvailable = product.available !== false;
-        return `
+    tbody.innerHTML = products
+        .map((product) => {
+            const isAvailable = product.available !== false;
+            return `
         <tr>
             <td><img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/60'"></td>
             <td>${product.name}</td>
@@ -1353,7 +1395,9 @@ function filterMenu() {
                 </div>
             </td>
         </tr>
-    `}).join('');
+    `;
+        })
+        .join('');
     updateCategorySelectIcons();
 }
 
@@ -1363,16 +1407,20 @@ function filterCategories() {
     let categories = getData(DB_KEYS.SUBCATEGORIES);
 
     if (mainCat) {
-        categories = categories.filter(c => c.mainCategory === mainCat);
+        categories = categories.filter((c) => c.mainCategory === mainCat);
     }
     if (search) {
-        categories = categories.filter(c => c.name.toLowerCase().includes(search) || (c.name_am && c.name_am.includes(search)));
+        categories = categories.filter(
+            (c) => c.name.toLowerCase().includes(search) || (c.name_am && c.name_am.includes(search)),
+        );
     }
 
     const tbody = document.getElementById('categoriesTableBody');
     if (!tbody) return;
 
-    tbody.innerHTML = categories.map(cat => `
+    tbody.innerHTML = categories
+        .map(
+            (cat) => `
         <tr>
             <td>${cat.name}</td>
             <td>${cat.name_am || '-'}</td>
@@ -1384,7 +1432,9 @@ function filterCategories() {
                 </div>
             </td>
         </tr>
-    `).join('');
+    `,
+        )
+        .join('');
     updateCategorySelectIcons();
 }
 
@@ -1392,33 +1442,30 @@ function bulkSeedCategories() {
     if (!ensurePermission('categories')) return;
 
     const currentCategories = getData(DB_KEYS.SUBCATEGORIES);
-    const existingNames = new Set(currentCategories.map(c => c.name.toLowerCase()));
+    const existingNames = new Set(currentCategories.map((c) => c.name.toLowerCase()));
 
-    const missingCategories = defaultSubCategories.filter(
-        cat => !existingNames.has(cat.name.toLowerCase())
-    );
+    const missingCategories = defaultSubCategories.filter((cat) => !existingNames.has(cat.name.toLowerCase()));
 
     if (missingCategories.length === 0) {
         alert('All default categories already exist. No missing categories to seed.');
         return;
     }
 
-    const confirmMsg = `Found ${missingCategories.length} missing category(ies):\n\n` +
-        missingCategories.map(c => `• ${c.name}`).join('\n') +
+    const confirmMsg =
+        `Found ${missingCategories.length} missing category(ies):\n\n` +
+        missingCategories.map((c) => `• ${c.name}`).join('\n') +
         '\n\nDo you want to add these missing categories?';
 
     if (!confirm(confirmMsg)) return;
 
     const nowIso = new Date().toISOString();
-    const maxId = currentCategories.length > 0
-        ? Math.max(...currentCategories.map(c => c.id))
-        : 0;
+    const maxId = currentCategories.length > 0 ? Math.max(...currentCategories.map((c) => c.id)) : 0;
 
     const newCategories = missingCategories.map((cat, index) => ({
         ...cat,
         id: maxId + index + 1,
         createdAt: nowIso,
-        updatedAt: nowIso
+        updatedAt: nowIso,
     }));
 
     const updatedCategories = [...currentCategories, ...newCategories];
@@ -1426,7 +1473,9 @@ function bulkSeedCategories() {
 
     loadCategories();
     populateSubCategoryDropdown();
-    alert(`Successfully added ${newCategories.length} category(ies)!\n\nAdded:\n${newCategories.map(c => '• ' + c.name).join('\n')}`);
+    alert(
+        `Successfully added ${newCategories.length} category(ies)!\n\nAdded:\n${newCategories.map((c) => '• ' + c.name).join('\n')}`,
+    );
 }
 
 function onMainCategoryChange() {
@@ -1438,13 +1487,13 @@ function updateProductsSubCategory(oldName, newName) {
     let products = getData(DB_KEYS.PRODUCTS);
     let updated = false;
 
-    products = products.map(p => {
+    products = products.map((p) => {
         if (p.subCategory === oldName) {
             updated = true;
             return {
                 ...p,
                 subCategory: newName,
-                category: p.category === oldName ? newName : p.category
+                category: p.category === oldName ? newName : p.category,
             };
         }
         return p;
@@ -1501,7 +1550,7 @@ function generateMenuReport() {
 
     const products = getData(DB_KEYS.PRODUCTS);
     currentReportData = products
-        .filter(item => {
+        .filter((item) => {
             const rawDate = item.updatedAt || item.createdAt;
             if (!rawDate) return true;
             const itemDate = new Date(rawDate);
@@ -1510,17 +1559,19 @@ function generateMenuReport() {
             if (endDate && itemDate > endDate) return false;
             return true;
         })
-        .map(item => ({
+        .map((item) => ({
             name: item.name,
             category: item.mainCategory || '',
             subCategory: item.subCategory || '',
             price: item.price,
-            date: item.updatedAt || item.createdAt || '-'
+            date: item.updatedAt || item.createdAt || '-',
         }));
 
     const tbody = document.getElementById('reportTableBody');
     if (!tbody) return;
-    tbody.innerHTML = currentReportData.map(row => `
+    tbody.innerHTML = currentReportData
+        .map(
+            (row) => `
         <tr>
             <td>${row.name}</td>
             <td>${row.category}</td>
@@ -1528,7 +1579,9 @@ function generateMenuReport() {
             <td>${row.price}</td>
             <td>${row.date === '-' ? '-' : new Date(row.date).toLocaleString()}</td>
         </tr>
-    `).join('');
+    `,
+        )
+        .join('');
     if (currentReportData.length === 0) {
         tbody.innerHTML = '<tr><td colspan="5">No data found in selected interval.</td></tr>';
     }
@@ -1553,9 +1606,9 @@ function exportMenuReport(type) {
     }
 
     const headers = ['Name', 'Category', 'SubCategory', 'Price', 'Date'];
-    const rows = currentReportData.map(row => [row.name, row.category, row.subCategory, row.price, row.date]);
+    const rows = currentReportData.map((row) => [row.name, row.category, row.subCategory, row.price, row.date]);
     const csv = [headers, ...rows]
-        .map(cols => cols.map(value => `"${String(value ?? '').replace(/"/g, '""')}"`).join(','))
+        .map((cols) => cols.map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`).join(','))
         .join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -1589,7 +1642,7 @@ function importMenuFromExcel(event) {
 
             const products = getData(DB_KEYS.PRODUCTS);
             const nowIso = new Date().toISOString();
-            rows.forEach(row => {
+            rows.forEach((row) => {
                 const name = row.Name || row.name;
                 if (!name) return;
                 const price = parseFloat(row.Price ?? row.price ?? 0);
@@ -1607,7 +1660,7 @@ function importMenuFromExcel(event) {
                     subCategory: String(subCategory),
                     category: String(subCategory || mainCategory),
                     createdAt: nowIso,
-                    updatedAt: nowIso
+                    updatedAt: nowIso,
                 });
             });
 

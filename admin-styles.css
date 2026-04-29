@@ -26,7 +26,12 @@
 }
 
 body {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family:
+        'Poppins',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif;
     background: var(--bg-dark);
     color: var(--text-light);
     line-height: 1.6;
@@ -430,11 +435,11 @@ body {
     font-size: 0.9rem;
 }
 
-.filter-bar input[type="number"] {
+.filter-bar input[type='number'] {
     width: 100px;
 }
 
-.filter-bar input[type="text"] {
+.filter-bar input[type='text'] {
     flex: 1;
     min-width: 150px;
 }
@@ -809,32 +814,32 @@ body {
     .sidebar {
         width: 200px;
     }
-    
+
     .main-content {
         margin-left: 200px;
     }
-    
+
     .stats-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .quick-actions {
         grid-template-columns: 1fr;
     }
-    
+
     .page-header {
         flex-direction: column;
         gap: 15px;
     }
-    
+
     .filter-bar {
         flex-direction: column;
     }
-    
+
     .filter-bar input {
         max-width: none;
     }
@@ -847,7 +852,7 @@ body {
     flex-wrap: wrap;
 }
 
-.image-upload-group input[type="url"] {
+.image-upload-group input[type='url'] {
     flex: 1;
     min-width: 200px;
 }

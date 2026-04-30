@@ -18,15 +18,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     const carouselPagination = document.getElementById('carouselPagination');
 
     window.menuData = await getMenuData();
+    console.log('App.js - Menu data loaded:', window.menuData.products?.length || 0, 'products');
     window.menuData.subCategories = window.menuData.subCategories || [];
     window.menuData.specials = (window.menuData.specials || []).filter((s) => s.available !== false);
 
+    console.log('App.js - Starting initialization...');
     initCarousel();
     renderFilterChips();
     renderMenu();
     renderPayment();
     initEventListeners();
     initDarkMode();
+    console.log('App.js - Initialization complete');
 
     function initCarousel() {
         if (!carouselSlides || !window.menuData || !window.menuData.specials) return;

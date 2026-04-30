@@ -47,19 +47,26 @@ const defaultMenuData = {
 
 async function loadMenuDataFromFile() {
     try {
+        console.log('Attempting to load menu-data.json...');
         const response = await fetch('menu-data.json');
+        console.log('Response status:', response.status);
+        
         if (!response.ok) {
             console.warn('Could not load menu-data.json, using defaults');
             return defaultMenuData;
         }
         const data = await response.json();
-        return {
+        console.log('Loaded menu data:', data?.length || 0, 'products');
+        
+        const result = {
             ...defaultMenuData,
             products: data || [],
             specials: []
         };
+        console.log('Final menu data result:', result.products.length, 'products');
+        return result;
     } catch (error) {
-        console.warn('Error loading menu data:', error);
+        console.error('Error loading menu data:', error);
         return defaultMenuData;
     }
 }

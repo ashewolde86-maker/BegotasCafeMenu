@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimal Test</title>
+</head>
+<body>
+    <h1>Minimal Menu Test</h1>
+    <div id="result">Loading...</div>
+    
+    <script src="data.js"></script>
+    <script>
+        // Test directly without DOMContentLoaded
+        try {
+            console.log('Testing embeddedMenuData...');
+            if (typeof embeddedMenuData !== 'undefined') {
+                document.getElementById('result').innerHTML = 
+                    `SUCCESS: embeddedMenuData has ${embeddedMenuData.length} products`;
+            } else {
+                document.getElementById('result').innerHTML = 
+                    'ERROR: embeddedMenuData is undefined';
+            }
+        } catch (error) {
+            document.getElementById('result').innerHTML = 
+                `ERROR: ${error.message}`;
+        }
+    </script>
+</body>
+</html>

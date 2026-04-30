@@ -6,13 +6,11 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentSubCategory = 'all';
     let currentView = 'grid';
     let searchQuery = '';
-    let currentSort = localStorage.getItem('menu_sort_preference') || 'name_asc';
     let carouselIndex = 0;
     let carouselAutoplay;
 
     const menuGrid = document.getElementById('menuGrid');
     const searchInput = document.getElementById('searchInput');
-    const sortSelect = document.getElementById('sortSelect');
     const noResults = document.getElementById('noResults');
     const filterChips = document.getElementById('filterChips');
     const carouselSlides = document.getElementById('carouselSlides');
@@ -28,9 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
     renderPayment();
     initEventListeners();
     initDarkMode();
-    if (sortSelect) {
-        sortSelect.value = currentSort;
-    }
 
     function initCarousel() {
         if (!carouselSlides || !window.menuData || !window.menuData.specials) return;
@@ -198,17 +193,36 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderFilterChips() {
         if (!filterChips || !window.menuData || !window.menuData.products) return;
 
-        const categories = ['All Types', ...new Set(window.menuData.products.map((p) => p.category).filter(Boolean))];
+        const displaySettings = window.menuData.displaySettings || {};
+        const categoryDisplay = displaySettings.categoryDisplay || 'main';
 
-        filterChips.innerHTML = categories
-            .map(
-                (cat, index) => `
-            <button class="filter-chip ${index === 0 ? 'active' : ''}" data-subcategory="${cat === 'All Types' ? 'all' : cat}">
-                ${getSubCategoryIcon(cat)} <span>${cat}</span>
-            </button>
-        `,
-            )
-            .join('');
+        if (categoryDisplay === 'main') {
+            const mainCats = (window.menuData.mainCategories || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+            const categories = ['All Types', ...mainCats.map((c) => c.name)];
+
+            filterChips.innerHTML = categories
+                .map(
+                    (cat, index) => `
+                <button class="filter-chip ${index === 0 ? 'active' : ''}" data-subcategory="${cat === 'All Types' ? 'all' : cat}">
+                    ${getSubCategoryIcon(cat)} <span>${cat}</span>
+                </button>
+            `,
+                )
+                .join('');
+        } else {
+            const sortedSubCats = (window.menuData.subCategories || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+            const categories = ['All Types', ...sortedSubCats.map((c) => c.name)];
+
+            filterChips.innerHTML = categories
+                .map(
+                    (cat, index) => `
+                <button class="filter-chip ${index === 0 ? 'active' : ''}" data-subcategory="${cat === 'All Types' ? 'all' : cat}">
+                    ${getSubCategoryIcon(cat)} <span>${cat}</span>
+                </button>
+            `,
+                )
+                .join('');
+        }
 
         filterChips.querySelectorAll('.filter-chip').forEach((btn) => {
             btn.addEventListener('click', handleFilterChipClick);
@@ -238,7 +252,19 @@ document.addEventListener('DOMContentLoaded', function () {
         const filtered = window.menuData.products.filter((product) => {
             if (product.available === false) return false;
 
-            const matchesCategory = currentCategory === 'all' || product.mainCategory === currentCategory;
+            const displaySettings = window.menuData.displaySettings || {};
+            const categoryDisplay = displaySettings.categoryDisplay || 'main';
+
+            let matchesCategory = true;
+            if (currentCategory !== 'all') {
+                if (categoryDisplay === 'main') {
+                    matchesCategory = product.mainCategory === currentCategory;
+                } else {
+                    matchesCategory =
+                        product.subCategory === currentCategory || product.category === currentCategory;
+                }
+            }
+
             const matchesSubCategory =
                 currentSubCategory === 'all' ||
                 product.subCategory === currentSubCategory ||
@@ -254,35 +280,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function sortProducts(products) {
         const sorted = [...products];
         sorted.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-        if (currentSort === 'name_asc') {
-            sorted.sort(
-                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (a.name || '').localeCompare(b.name || ''),
-            );
-        } else if (currentSort === 'name_desc') {
-            sorted.sort(
-                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (b.name || '').localeCompare(a.name || ''),
-            );
-        } else if (currentSort === 'price_asc') {
-            sorted.sort(
-                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (Number(a.price) || 0) - (Number(b.price) || 0),
-            );
-        } else if (currentSort === 'price_desc') {
-            sorted.sort(
-                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0) || (Number(b.price) || 0) - (Number(a.price) || 0),
-            );
-        } else if (currentSort === 'newest') {
-            sorted.sort(
-                (a, b) =>
-                    (a.sortOrder || 0) - (b.sortOrder || 0) ||
-                    new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0),
-            );
-        } else if (currentSort === 'oldest') {
-            sorted.sort(
-                (a, b) =>
-                    (a.sortOrder || 0) - (b.sortOrder || 0) ||
-                    new Date(a.updatedAt || a.createdAt || 0) - new Date(b.updatedAt || b.createdAt || 0),
-            );
-        }
         return sorted;
     }
 
@@ -310,14 +307,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function renderPayment() {
         const paymentCards = document.querySelector('.payment-cards');
+        const paymentSection = document.getElementById('paymentSection');
+        const navPaymentLink = document.getElementById('navPaymentLink');
+        const mobileNavPaymentLink = document.getElementById('mobileNavPaymentLink');
+        const footerPaymentLink = document.getElementById('footerPaymentLink');
+
         if (!paymentCards || !window.menuData || !window.menuData.payment) return;
 
-        if (window.menuData.payment.length === 0) {
-            paymentCards.innerHTML = '<p style="color:var(--text-muted)">No payment methods available</p>';
+        const activePayments = window.menuData.payment.filter((p) => p.active !== false);
+
+        if (activePayments.length === 0) {
+            if (paymentSection) paymentSection.style.display = 'none';
+            if (navPaymentLink) navPaymentLink.style.display = 'none';
+            if (mobileNavPaymentLink) mobileNavPaymentLink.style.display = 'none';
+            if (footerPaymentLink) footerPaymentLink.style.display = 'none';
             return;
         }
 
-        paymentCards.innerHTML = window.menuData.payment
+        if (paymentSection) paymentSection.style.display = 'block';
+        if (navPaymentLink) navPaymentLink.style.display = 'flex';
+        if (mobileNavPaymentLink) mobileNavPaymentLink.style.display = 'block';
+        if (footerPaymentLink) footerPaymentLink.style.display = 'inline';
+
+        paymentCards.innerHTML = activePayments
             .map(
                 (p) => `
             <div class="payment-card">
@@ -361,9 +373,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (searchInput) {
             searchInput.addEventListener('input', handleSearch);
-        }
-        if (sortSelect) {
-            sortSelect.addEventListener('change', handleSortChange);
         }
 
         document.querySelectorAll('.copy-btn').forEach((btn) => {
@@ -432,12 +441,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function handleSearch(e) {
         searchQuery = e.target.value.trim();
-        renderMenu();
-    }
-
-    function handleSortChange(e) {
-        currentSort = e.target.value;
-        localStorage.setItem('menu_sort_preference', currentSort);
         renderMenu();
     }
 

@@ -612,6 +612,46 @@ body {
     background: #c82333;
 }
 
+.sort-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    background: var(--bg-dark-tertiary);
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+    min-width: 28px;
+}
+
+.sort-btn:hover:not(:disabled) {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.sort-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.dropdown-content {
+    animation: fadeIn 0.2s ease;
+}
+
+.dropdown-item {
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background: var(--bg-dark-tertiary) !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .reviews-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -883,4 +923,59 @@ body {
 
 .image-preview.has-image {
     border-style: solid;
+}
+
+.pagination-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination-info {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.pagination-controls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pagination-btn {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    background: var(--bg-dark-secondary);
+    color: var(--text-light);
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    min-width: 40px;
+}
+
+.pagination-btn:hover:not(:disabled):not(.active) {
+    background: var(--bg-dark-tertiary);
+    border-color: var(--primary);
+}
+
+.pagination-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    font-weight: 600;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-ellipsis {
+    color: var(--text-muted);
+    padding: 0 5px;
 }

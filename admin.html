@@ -198,7 +198,7 @@
                     </a>
                 </nav>
                 <div class="sidebar-footer">
-                    <a href="C:/xampp/htdocs/BegotasCafeMenu/index.html" target="_blank" class="view-menu-btn">
+                    <a href="file:///C:/Users/ASHE/Documents/GitHub/BegotasCafeMenu/index.html" target="_blank" class="view-menu-btn">
                         <svg
                             width="20"
                             height="20"
@@ -404,20 +404,39 @@
                         </div>
                     </div>
 
-                    <div id="menu" class="page">
+                     <div id="menu" class="page">
                         <div class="page-header">
                             <h2>Menu Items</h2>
                             <div class="page-header-actions">
                                 <button
                                     class="btn-secondary"
-                                    onclick="document.getElementById('menuExcelImportFile').click()"
+                                    onclick="saveProductsToExcel()"
+                                    title="Save/Export products to Excel file"
                                 >
-                                    Import Excel
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    Save to Excel
+                                </button>
+                                <button
+                                    class="btn-secondary"
+                                    onclick="document.getElementById('menuExcelImportFile').click()"
+                                    title="Import products from Excel file (.xlsx, .xls, .csv)"
+                                >
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    </svg>
+                                    Import from Excel
                                 </button>
                                 <input
                                     type="file"
                                     id="menuExcelImportFile"
-                                    accept=".xlsx,.xls"
+                                    accept=".xlsx,.xls,.csv"
                                     style="display: none"
                                     onchange="importMenuFromExcel(event)"
                                 />
@@ -436,6 +455,9 @@
                                     Add Product
                                 </button>
                             </div>
+                        </div>
+                        <div style="background: var(--bg-dark-tertiary); padding: 12px 16px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem; color: var(--text-muted);">
+                            <strong style="color: var(--text-light);">Excel Import Format:</strong> Use columns: <code>Name</code> (required), <code>NameAm</code>, <code>Price</code> (required), <code>Category</code> (Drink/Food/Extra), <code>SubCategory</code>, <code>Description</code>, <code>DescriptionAm</code>, <code>Image</code> (URL)
                         </div>
                         <div class="filter-bar">
                             <div class="category-select-control">
@@ -491,20 +513,34 @@
                     <div id="specials" class="page">
                         <div class="page-header">
                             <h2>Special Products</h2>
-                            <button class="btn-primary" onclick="addItem('specials')">
-                                <svg
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
+                            <div class="page-header-actions">
+                                <button
+                                    class="btn-secondary"
+                                    onclick="saveSpecialsToExcel()"
+                                    title="Save/Export special products to Excel file"
                                 >
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                                Add Special
-                            </button>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    Save to Excel
+                                </button>
+                                <button class="btn-primary" onclick="addItem('specials')">
+                                    <svg
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                    >
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    Add Special
+                                </button>
+                            </div>
                         </div>
                         <div class="table-container">
                             <table class="data-table">
@@ -527,35 +563,56 @@
                         <div class="page-header">
                             <h2>Sub Categories</h2>
                             <div class="page-header-actions">
-                                <button class="btn-secondary" onclick="bulkSeedCategories()">
-                                    <svg
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                    >
+                                <button
+                                    class="btn-secondary"
+                                    onclick="saveCategoriesToExcel()"
+                                    title="Save/Export subcategories to Excel file"
+                                >
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
                                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                         <polyline points="7 10 12 15 17 10"></polyline>
                                         <line x1="12" y1="15" x2="12" y2="3"></line>
                                     </svg>
-                                    Bulk Seed
+                                    Save to Excel
                                 </button>
-                                <button class="btn-primary" onclick="addItem('categories')">
-                                    <svg
-                                        width="20"
-                                        height="20"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                    >
-                                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    </svg>
-                                    Add Category
-                                </button>
+                                <div class="dropdown" style="position: relative; display: inline-block;">
+                                    <button class="btn-primary" onclick="toggleAddCategoryDropdown()">
+                                        <svg
+                                            width="20"
+                                            height="20"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        >
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
+                                        Add Sub Category
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </button>
+                                    <div id="addCategoryDropdown" class="dropdown-content" style="display: none; position: absolute; right: 0; background: var(--bg-card); min-width: 220px; box-shadow: 0 8px 16px var(--shadow-lg); border-radius: 8px; z-index: 1000; overflow: hidden;">
+                                        <button class="dropdown-item" onclick="addItem('categories')" style="display: block; width: 100%; padding: 12px 16px; text-align: left; border: none; background: none; color: var(--text-light); cursor: pointer; font-size: 0.9rem;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 8px;">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                            Create New Sub Category
+                                        </button>
+                                        <button class="dropdown-item" onclick="document.getElementById('excelImportInput').click()" style="display: block; width: 100%; padding: 12px 16px; text-align: left; border: none; background: none; color: var(--text-light); cursor: pointer; font-size: 0.9rem;" title="Excel columns: Name, NameAm (optional), MainCategory (Drink/Food/Extra), Icon (optional), Sort Order (optional)">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 8px;">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                <polyline points="14 2 14 8 20 8"></polyline>
+                                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            </svg>
+                                            Import from Excel File
+                                        </button>
+                                        <input type="file" id="excelImportInput" accept=".xlsx,.xls,.csv" style="display: none;" onchange="importCategoriesFromExcel(event)">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="filter-bar">
@@ -575,6 +632,9 @@
                                 oninput="filterCategories()"
                             />
                         </div>
+                        <div style="background: var(--bg-dark-tertiary); padding: 12px 16px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem; color: var(--text-muted);">
+                            <strong style="color: var(--text-light);">Excel Import Format:</strong> Use columns: <code>Name</code> (required), <code>NameAm</code> (optional), <code>MainCategory</code> (Drink/Food/Extra), <code>Icon</code> (optional), <code>Sort Order</code> (optional)
+                        </div>
                         <div class="table-container">
                             <table class="data-table">
                                 <thead>
@@ -582,6 +642,7 @@
                                         <th>Name</th>
                                         <th>Name (Amharic)</th>
                                         <th>Main Category</th>
+                                        <th>Sort Order</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -616,6 +677,7 @@
                                         <th>Type</th>
                                         <th>Account Holder</th>
                                         <th>Account/Phone</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -702,32 +764,59 @@
                                 </div>
                             </div>
 
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>Admin Security</h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label>Current Password</label>
-                                        <input
-                                            type="password"
-                                            id="currentAdminPassword"
-                                            autocomplete="current-password"
-                                        />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>New Password</label>
-                                        <input type="password" id="newAdminPassword" autocomplete="new-password" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Confirm New Password</label>
-                                        <input type="password" id="confirmAdminPassword" autocomplete="new-password" />
-                                    </div>
-                                    <button class="btn-primary" onclick="changeAdminPassword()">Change Password</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                             <div class="card">
+                                 <div class="card-header">
+                                     <h3>Admin Security</h3>
+                                 </div>
+                                 <div class="card-body">
+                                     <div class="form-group">
+                                         <label>Current Password</label>
+                                         <input
+                                             type="password"
+                                             id="currentAdminPassword"
+                                             autocomplete="current-password"
+                                         />
+                                     </div>
+                                     <div class="form-group">
+                                         <label>New Password</label>
+                                         <input type="password" id="newAdminPassword" autocomplete="new-password" />
+                                     </div>
+                                     <div class="form-group">
+                                         <label>Confirm New Password</label>
+                                         <input type="password" id="confirmAdminPassword" autocomplete="new-password" />
+                                     </div>
+                                     <button class="btn-primary" onclick="changeAdminPassword()">Change Password</button>
+                                 </div>
+                             </div>
+
+                             <div class="card">
+                                 <div class="card-header">
+                                     <h3>Main Categories</h3>
+                                 </div>
+                                 <div class="card-body">
+                                     <p style="color: var(--text-muted); margin-bottom: 15px;">Drag to reorder main categories. Lower sort order appears first.</p>
+                                     <div id="mainCategoriesList"></div>
+                                     <button class="btn-secondary" onclick="addMainCategory()" style="margin-top: 15px;">Add Main Category</button>
+                                 </div>
+                             </div>
+
+                             <div class="card">
+                                 <div class="card-header">
+                                     <h3>Customer Menu Display</h3>
+                                 </div>
+                                 <div class="card-body">
+                                     <div class="form-group">
+                                         <label>Category Display Mode</label>
+                                         <select id="categoryDisplayMode" onchange="saveDisplaySettings()">
+                                             <option value="main">Show Main Categories Only</option>
+                                             <option value="sub">Show Sub Categories Only</option>
+                                         </select>
+                                         <small>Choose whether customers see main categories (Drink, Food, Extra) or sub categories (Coffee, Burger, etc.)</small>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
 
                     <div id="Reports" class="page">
                         <div class="page-header">
@@ -1163,6 +1252,11 @@
                                     <option value="Extra">Extra</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Sort Order</label>
+                            <input type="number" id="categorySortOrder" placeholder="1" min="0" value="0" />
+                            <small>Lower numbers appear first</small>
                         </div>
                     </div>
                 </form>

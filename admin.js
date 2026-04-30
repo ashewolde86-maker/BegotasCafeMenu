@@ -28,6 +28,9 @@ let currentReportData = [];
 let currentEditingItem = null;
 let currentEditType = null;
 let currentEditId = null;
+const ITEMS_PER_PAGE = 15;
+let currentMenuPage = 1;
+let filteredMenuItems = [];
 const LEGACY_CATEGORY_RENAMES = {
     Breakfast: 'Pasta & Rice',
     Shewarma: 'Shawarma & Wrap',
@@ -494,10 +497,28 @@ function populateMenuSubCategoryFilter() {
 
 function loadMenuItems() {
     const products = getData(DB_KEYS.PRODUCTS).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    filteredMenuItems = products;
+    currentMenuPage = 1;
+    displayMenuPage();
+
+    if (document.getElementById('totalProducts')) {
+        document.getElementById('totalProducts').textContent = products.length;
+    }
+}
+
+function displayMenuPage() {
     const tbody = document.getElementById('menuTableBody');
     if (!tbody) return;
 
-    tbody.innerHTML = products
+    const totalItems = filteredMenuItems.length;
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+    if (currentMenuPage > totalPages) currentMenuPage = totalPages || 1;
+
+    const startIndex = (currentMenuPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+    const pageItems = filteredMenuItems.slice(startIndex, endIndex);
+
+    tbody.innerHTML = pageItems
         .map((product) => {
             const isAvailable = product.available !== false;
             return `
@@ -509,8 +530,8 @@ function loadMenuItems() {
             <td>${product.price}.00 Br</td>
             <td>${product.sortOrder || 0}</td>
             <td>
-                <button class="status-toggle ${isAvailable ? 'active' : ''}" 
-                    onclick="toggleProductStatus(${product.id})" 
+                <button class="status-toggle ${isAvailable ? 'active' : ''}"
+                    onclick="toggleProductStatus(${product.id})"
                     title="${isAvailable ? 'Click to mark unavailable' : 'Click to mark available'}">
                 </button>
             </td>
@@ -525,9 +546,63 @@ function loadMenuItems() {
         })
         .join('');
 
-    if (document.getElementById('totalProducts')) {
-        document.getElementById('totalProducts').textContent = products.length;
+    updateMenuPagination(totalItems, totalPages);
+}
+
+function updateMenuPagination(totalItems, totalPages) {
+    let paginationContainer = document.getElementById('menuPagination');
+    if (!paginationContainer) {
+        paginationContainer = document.createElement('div');
+        paginationContainer.id = 'menuPagination';
+        paginationContainer.className = 'pagination-container';
+        const tableContainer = document.querySelector('#menu .table-container');
+        if (tableContainer) {
+            tableContainer.parentNode.insertBefore(paginationContainer, tableContainer.nextSibling);
+        }
     }
+
+    if (totalItems === 0) {
+        paginationContainer.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:10px;">No products found.</p>';
+        return;
+    }
+
+    let paginationHTML = `<div class="pagination-info">Showing ${(currentMenuPage - 1) * ITEMS_PER_PAGE + 1}-${Math.min(currentMenuPage * ITEMS_PER_PAGE, totalItems)} of ${totalItems} items</div>`;
+    paginationHTML += '<div class="pagination-controls">';
+
+    paginationHTML += `<button class="pagination-btn" onclick="changeMenuPage(${currentMenuPage - 1})" ${currentMenuPage === 1 ? 'disabled' : ''}>Previous</button>`;
+
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentMenuPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    if (startPage > 1) {
+        paginationHTML += `<button class="pagination-btn" onclick="changeMenuPage(1)">1</button>`;
+        if (startPage > 2) paginationHTML += '<span class="pagination-ellipsis">...</span>';
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        paginationHTML += `<button class="pagination-btn ${i === currentMenuPage ? 'active' : ''}" onclick="changeMenuPage(${i})">${i}</button>`;
+    }
+
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) paginationHTML += '<span class="pagination-ellipsis">...</span>';
+        paginationHTML += `<button class="pagination-btn" onclick="changeMenuPage(${totalPages})">${totalPages}</button>`;
+    }
+
+    paginationHTML += `<button class="pagination-btn" onclick="changeMenuPage(${currentMenuPage + 1})" ${currentMenuPage === totalPages ? 'disabled' : ''}>Next</button>`;
+    paginationHTML += '</div>';
+
+    paginationContainer.innerHTML = paginationHTML;
+}
+
+function changeMenuPage(page) {
+    const totalPages = Math.ceil(filteredMenuItems.length / ITEMS_PER_PAGE);
+    if (page < 1 || page > totalPages) return;
+    currentMenuPage = page;
+    displayMenuPage();
 }
 
 function toggleProductStatus(productId) {
@@ -547,8 +622,43 @@ function toggleProductStatus(productId) {
     data[index].updatedAt = new Date().toISOString();
 
     saveData(key, data);
-    loadMenuItems();
+    refreshMenuAfterDataChange();
     loadDashboard();
+}
+
+function refreshMenuAfterDataChange() {
+    const category = document.getElementById('menuCategoryFilter')?.value;
+    const subCategory = document.getElementById('menuSubCategoryFilter')?.value;
+    const search = document.getElementById('menuSearch')?.value.toLowerCase() || '';
+    const minPrice = parseFloat(document.getElementById('menuMinPrice')?.value) || 0;
+    const maxPrice = parseFloat(document.getElementById('menuMaxPrice')?.value) || Infinity;
+    let products = getData(DB_KEYS.PRODUCTS);
+
+    if (category) {
+        products = products.filter((p) => p.mainCategory === category);
+    }
+    if (subCategory) {
+        products = products.filter((p) => p.subCategory === subCategory);
+    }
+    if (search) {
+        products = products.filter((p) => p.name.toLowerCase().includes(search));
+    }
+    if (minPrice > 0) {
+        products = products.filter((p) => p.price >= minPrice);
+    }
+    if (maxPrice < Infinity) {
+        products = products.filter((p) => p.price <= maxPrice);
+    }
+
+    products = products.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    filteredMenuItems = products;
+
+    const totalPages = Math.ceil(filteredMenuItems.length / ITEMS_PER_PAGE);
+    if (currentMenuPage > totalPages) {
+        currentMenuPage = totalPages || 1;
+    }
+
+    displayMenuPage();
 }
 
 function loadSpecials() {
@@ -615,12 +725,20 @@ function loadPayment() {
 
     tbody.innerHTML = payment
         .map(
-            (p) => `
+            (p) => {
+                const isActive = p.active !== false;
+                return `
         <tr>
             <td>${p.method}</td>
             <td>${p.type}</td>
             <td>${p.holder}</td>
             <td>${p.account}</td>
+            <td>
+                <button class="status-toggle ${isActive ? 'active' : ''}"
+                    onclick="togglePaymentStatus(${p.id})"
+                    title="${isActive ? 'Click to mark inactive' : 'Click to mark active'}">
+                </button>
+            </td>
             <td>
                 <div class="table-actions">
                     <button class="action-edit" onclick="editItem('payment', ${p.id})">Edit</button>
@@ -628,7 +746,8 @@ function loadPayment() {
                 </div>
             </td>
         </tr>
-    `,
+    `;
+            },
         )
         .join('');
 
@@ -637,18 +756,45 @@ function loadPayment() {
     }
 }
 
+function togglePaymentStatus(paymentId) {
+    if (!ensurePermission('payment')) return;
+
+    const key = DB_KEYS.PAYMENT;
+    const data = getData(key);
+    const index = data.findIndex((p) => p.id === paymentId);
+
+    if (index === -1) {
+        alert('Payment method not found.');
+        return;
+    }
+
+    const currentStatus = data[index].active !== false;
+    data[index].active = !currentStatus;
+    data[index].updatedAt = new Date().toISOString();
+
+    saveData(key, data);
+    loadPayment();
+}
+
 function loadCategories() {
-    const categories = getData(DB_KEYS.SUBCATEGORIES);
+    const categories = getData(DB_KEYS.SUBCATEGORIES).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
     const tbody = document.getElementById('categoriesTableBody');
     if (!tbody) return;
 
     tbody.innerHTML = categories
         .map(
-            (cat) => `
+            (cat, index) => `
         <tr>
             <td>${cat.name}</td>
             <td>${cat.name_am || '-'}</td>
             <td>${cat.mainCategory}</td>
+            <td>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <button class="sort-btn" onclick="moveCategory(${cat.id}, 'up')" ${index === 0 ? 'disabled' : ''} style="padding: 2px 6px; min-width: 25px; font-size: 12px;" title="Move Up">↑</button>
+                    <button class="sort-btn" onclick="moveCategory(${cat.id}, 'down')" ${index === categories.length - 1 ? 'disabled' : ''} style="padding: 2px 6px; min-width: 25px; font-size: 12px;" title="Move Down">↓</button>
+                    <span style="margin-left: 5px;">${cat.sortOrder || 0}</span>
+                </div>
+            </td>
             <td>
                 <div class="table-actions">
                     <button class="action-edit" onclick="editItem('categories', ${cat.id})">Edit</button>
@@ -659,6 +805,22 @@ function loadCategories() {
     `,
         )
         .join('');
+}
+
+function moveCategory(id, direction) {
+    const categories = getData(DB_KEYS.SUBCATEGORIES).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    const index = categories.findIndex((c) => c.id === id);
+    if (index === -1) return;
+
+    const swapIndex = direction === 'up' ? index - 1 : index + 1;
+    if (swapIndex < 0 || swapIndex >= categories.length) return;
+
+    const currentOrder = categories[index].sortOrder;
+    categories[index].sortOrder = categories[swapIndex].sortOrder;
+    categories[swapIndex].sortOrder = currentOrder;
+
+    saveData(DB_KEYS.SUBCATEGORIES, categories);
+    loadCategories();
 }
 
 function loadReviews() {
@@ -698,6 +860,7 @@ function loadReviews() {
 function loadSettings() {
     const settings = getData(DB_KEYS.SETTINGS);
     const restaurant = getData(DB_KEYS.RESTAURANT);
+    const displaySettings = getData(DB_KEYS.DISPLAY_SETTINGS);
 
     if (settings && settings.menuUrl) {
         document.getElementById('menuUrl').value = settings.menuUrl;
@@ -711,6 +874,106 @@ function loadSettings() {
         document.getElementById('restaurantPhone').value = restaurant.phone || '';
         document.getElementById('restaurantHours').value = restaurant.hours || '';
     }
+
+    if (displaySettings && displaySettings.categoryDisplay) {
+        const displaySelect = document.getElementById('categoryDisplayMode');
+        if (displaySelect) displaySelect.value = displaySettings.categoryDisplay;
+    }
+
+    loadMainCategories();
+}
+
+function loadMainCategories() {
+    const mainCats = getData(DB_KEYS.MAIN_CATEGORIES).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    const container = document.getElementById('mainCategoriesList');
+    if (!container) return;
+
+    container.innerHTML = mainCats
+        .map(
+            (cat, index) => `
+        <div class="main-cat-item" style="display: flex; align-items: center; gap: 10px; padding: 10px; margin-bottom: 8px; background: var(--bg-dark-tertiary); border-radius: 8px;">
+            <button class="sort-btn" onclick="moveMainCategory(${cat.id}, 'up')" ${index === 0 ? 'disabled' : ''} style="padding: 4px 8px; min-width: 30px;" title="Move Up">↑</button>
+            <button class="sort-btn" onclick="moveMainCategory(${cat.id}, 'down')" ${index === mainCats.length - 1 ? 'disabled' : ''} style="padding: 4px 8px; min-width: 30px;" title="Move Down">↓</button>
+            <span style="flex: 1;">
+                <strong>${cat.name}</strong> (${cat.name_am || '-'})
+                <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 10px;">Sort: ${cat.sortOrder || 0}</span>
+            </span>
+            <button class="action-edit" onclick="editMainCategory(${cat.id})">Edit</button>
+            <button class="action-delete" onclick="deleteMainCategory(${cat.id})">Delete</button>
+        </div>
+    `,
+        )
+        .join('');
+}
+
+function moveMainCategory(id, direction) {
+    const mainCats = getData(DB_KEYS.MAIN_CATEGORIES).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    const index = mainCats.findIndex((c) => c.id === id);
+    if (index === -1) return;
+
+    const swapIndex = direction === 'up' ? index - 1 : index + 1;
+    if (swapIndex < 0 || swapIndex >= mainCats.length) return;
+
+    const currentOrder = mainCats[index].sortOrder;
+    mainCats[index].sortOrder = mainCats[swapIndex].sortOrder;
+    mainCats[swapIndex].sortOrder = currentOrder;
+
+    saveData(DB_KEYS.MAIN_CATEGORIES, mainCats);
+    loadMainCategories();
+}
+
+function addMainCategory() {
+    const name = prompt('Enter main category name (English):');
+    if (!name) return;
+    const name_am = prompt('Enter main category name (Amharic):') || '';
+    const mainCats = getData(DB_KEYS.MAIN_CATEGORIES);
+    const sortOrder = mainCats.length + 1;
+
+    const newCat = {
+        id: generateId(DB_KEYS.MAIN_CATEGORIES),
+        name: name,
+        name_am: name_am,
+        sortOrder: sortOrder,
+        icon: 'other',
+    };
+
+    mainCats.push(newCat);
+    saveData(DB_KEYS.MAIN_CATEGORIES, mainCats);
+    loadMainCategories();
+}
+
+function editMainCategory(id) {
+    const mainCats = getData(DB_KEYS.MAIN_CATEGORIES);
+    const cat = mainCats.find((c) => c.id === id);
+    if (!cat) return;
+
+    const name = prompt('Enter main category name (English):', cat.name);
+    if (!name) return;
+    const name_am = prompt('Enter main category name (Amharic):', cat.name_am || '');
+    const sortOrder = parseInt(prompt('Enter sort order:', cat.sortOrder || 0)) || 0;
+
+    const index = mainCats.findIndex((c) => c.id === id);
+    mainCats[index] = { ...cat, name: name, name_am: name_am, sortOrder: sortOrder };
+
+    saveData(DB_KEYS.MAIN_CATEGORIES, mainCats);
+    loadMainCategories();
+}
+
+function deleteMainCategory(id) {
+    if (!confirm('Are you sure you want to delete this main category? This will not delete the associated subcategories and products.')) return;
+
+    let mainCats = getData(DB_KEYS.MAIN_CATEGORIES);
+    mainCats = mainCats.filter((c) => c.id !== id);
+
+    saveData(DB_KEYS.MAIN_CATEGORIES, mainCats);
+    loadMainCategories();
+}
+
+function saveDisplaySettings() {
+    const displayMode = document.getElementById('categoryDisplayMode').value;
+    const settings = { categoryDisplay: displayMode };
+    saveData(DB_KEYS.DISPLAY_SETTINGS, settings);
+    alert('Display settings saved!');
 }
 
 function loadAccounts() {
@@ -1133,6 +1396,7 @@ function saveItem() {
         const oldName = currentEditingItem ? currentEditingItem.name : null;
         const newName = document.getElementById('categoryName').value;
         const newMainCat = document.getElementById('categoryMainCategory').value;
+        const sortOrder = parseInt(document.getElementById('categorySortOrder').value) || 0;
 
         if (currentEditingItem) {
             const index = data.findIndex((c) => c.id === currentEditId);
@@ -1141,6 +1405,7 @@ function saveItem() {
                 name: newName,
                 name_am: document.getElementById('categoryNameAm').value,
                 mainCategory: newMainCat,
+                sortOrder: sortOrder,
                 updatedAt: nowIso,
             };
 
@@ -1153,6 +1418,7 @@ function saveItem() {
                 name: document.getElementById('categoryName').value,
                 name_am: document.getElementById('categoryNameAm').value,
                 mainCategory: document.getElementById('categoryMainCategory').value,
+                sortOrder: sortOrder,
                 createdAt: nowIso,
                 updatedAt: nowIso,
             };
@@ -1179,6 +1445,7 @@ function saveItem() {
                 type: document.getElementById('paymentType').value,
                 holder: document.getElementById('paymentHolder').value,
                 account: document.getElementById('paymentAccount').value,
+                active: true,
                 createdAt: nowIso,
                 updatedAt: nowIso,
             };
@@ -1188,7 +1455,11 @@ function saveItem() {
 
     saveData(key, data);
     closeModal();
-    loadMenuItems();
+    if (key === DB_KEYS.PRODUCTS) {
+        refreshMenuAfterDataChange();
+    } else {
+        loadMenuItems();
+    }
     loadSpecials();
     loadCategories();
     loadPayment();
@@ -1218,7 +1489,11 @@ function deleteItem(type, id) {
     data = data.filter((item) => item.id !== id);
     saveData(key, data);
 
-    loadMenuItems();
+    if (type === 'menu') {
+        refreshMenuAfterDataChange();
+    } else {
+        loadMenuItems();
+    }
     loadSpecials();
     loadCategories();
     loadPayment();
@@ -1300,6 +1575,81 @@ function exportData() {
     URL.revokeObjectURL(url);
 }
 
+function saveProductsToExcel() {
+    if (typeof XLSX === 'undefined') {
+        alert('Excel library is not loaded. Please refresh the page.');
+        return;
+    }
+    const products = getData(DB_KEYS.PRODUCTS);
+    if (!products.length) {
+        alert('No products to save.');
+        return;
+    }
+    const exportData = products.map((p) => ({
+        Name: p.name,
+        NameAm: p.name_am || '',
+        Price: p.price,
+        Category: p.mainCategory,
+        SubCategory: p.subCategory || '',
+        Description: p.description || '',
+        DescriptionAm: p.description_am || '',
+        Image: p.image || '',
+        'Sort Order': p.sortOrder || 0,
+    }));
+    const ws = XLSX.utils.json_to_sheet(exportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Products');
+    XLSX.writeFile(wb, 'begotas-products.xlsx');
+}
+
+function saveCategoriesToExcel() {
+    if (typeof XLSX === 'undefined') {
+        alert('Excel library is not loaded. Please refresh the page.');
+        return;
+    }
+    const categories = getData(DB_KEYS.SUBCATEGORIES);
+    if (!categories.length) {
+        alert('No subcategories to save.');
+        return;
+    }
+    const exportData = categories.map((c) => ({
+        Name: c.name,
+        NameAm: c.name_am || '',
+        MainCategory: c.mainCategory,
+        Icon: c.icon || '',
+        'Sort Order': c.sortOrder || 0,
+    }));
+    const ws = XLSX.utils.json_to_sheet(exportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'SubCategories');
+    XLSX.writeFile(wb, 'begotas-subcategories.xlsx');
+}
+
+function saveSpecialsToExcel() {
+    if (typeof XLSX === 'undefined') {
+        alert('Excel library is not loaded. Please refresh the page.');
+        return;
+    }
+    const specials = getData(DB_KEYS.SPECIALS);
+    if (!specials.length) {
+        alert('No special products to save.');
+        return;
+    }
+    const exportData = specials.map((s) => ({
+        Name: s.name,
+        NameAm: s.name_am || '',
+        Price: s.price,
+        Category: s.mainCategory,
+        SubCategory: s.subCategory || '',
+        Description: s.description || '',
+        Image: s.image || '',
+    }));
+    const ws = XLSX.utils.json_to_sheet(exportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Specials');
+    XLSX.writeFile(wb, 'begotas-specials.xlsx');
+}
+
 function importData(event) {
     if (!ensurePermission('settings')) return;
     const file = event.target.files[0];
@@ -1365,46 +1715,17 @@ function filterMenu() {
     }
 
     products = products.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-
+    filteredMenuItems = products;
+    currentMenuPage = 1;
+    displayMenuPage();
     populateMenuSubCategoryFilter();
-
-    const tbody = document.getElementById('menuTableBody');
-    if (!tbody) return;
-
-    tbody.innerHTML = products
-        .map((product) => {
-            const isAvailable = product.available !== false;
-            return `
-        <tr>
-            <td><img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/60'"></td>
-            <td>${product.name}</td>
-            <td>${product.mainCategory}</td>
-            <td>${product.subCategory || '-'}</td>
-            <td>${product.price}.00 Br</td>
-            <td>${product.sortOrder || 0}</td>
-            <td>
-                <button class="status-toggle ${isAvailable ? 'active' : ''}" 
-                    onclick="toggleProductStatus(${product.id})" 
-                    title="${isAvailable ? 'Click to mark unavailable' : 'Click to mark available'}">
-                </button>
-            </td>
-            <td>
-                <div class="table-actions">
-                    <button class="action-edit" onclick="editItem('menu', ${product.id})">Edit</button>
-                    <button class="action-delete" onclick="deleteItem('menu', ${product.id})">Delete</button>
-                </div>
-            </td>
-        </tr>
-    `;
-        })
-        .join('');
     updateCategorySelectIcons();
 }
 
 function filterCategories() {
     const mainCat = document.getElementById('categoryMainFilter')?.value;
     const search = document.getElementById('categorySearch')?.value.toLowerCase() || '';
-    let categories = getData(DB_KEYS.SUBCATEGORIES);
+    let categories = getData(DB_KEYS.SUBCATEGORIES).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
     if (mainCat) {
         categories = categories.filter((c) => c.mainCategory === mainCat);
@@ -1420,11 +1741,18 @@ function filterCategories() {
 
     tbody.innerHTML = categories
         .map(
-            (cat) => `
+            (cat, index) => `
         <tr>
             <td>${cat.name}</td>
             <td>${cat.name_am || '-'}</td>
             <td>${cat.mainCategory}</td>
+            <td>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <button class="sort-btn" onclick="moveCategory(${cat.id}, 'up')" ${index === 0 ? 'disabled' : ''} style="padding: 2px 6px; min-width: 25px; font-size: 12px;" title="Move Up">↑</button>
+                    <button class="sort-btn" onclick="moveCategory(${cat.id}, 'down')" ${index === categories.length - 1 ? 'disabled' : ''} style="padding: 2px 6px; min-width: 25px; font-size: 12px;" title="Move Down">↓</button>
+                    <span style="margin-left: 5px;">${cat.sortOrder || 0}</span>
+                </div>
+            </td>
             <td>
                 <div class="table-actions">
                     <button class="action-edit" onclick="editItem('categories', ${cat.id})">Edit</button>
@@ -1436,46 +1764,6 @@ function filterCategories() {
         )
         .join('');
     updateCategorySelectIcons();
-}
-
-function bulkSeedCategories() {
-    if (!ensurePermission('categories')) return;
-
-    const currentCategories = getData(DB_KEYS.SUBCATEGORIES);
-    const existingNames = new Set(currentCategories.map((c) => c.name.toLowerCase()));
-
-    const missingCategories = defaultSubCategories.filter((cat) => !existingNames.has(cat.name.toLowerCase()));
-
-    if (missingCategories.length === 0) {
-        alert('All default categories already exist. No missing categories to seed.');
-        return;
-    }
-
-    const confirmMsg =
-        `Found ${missingCategories.length} missing category(ies):\n\n` +
-        missingCategories.map((c) => `• ${c.name}`).join('\n') +
-        '\n\nDo you want to add these missing categories?';
-
-    if (!confirm(confirmMsg)) return;
-
-    const nowIso = new Date().toISOString();
-    const maxId = currentCategories.length > 0 ? Math.max(...currentCategories.map((c) => c.id)) : 0;
-
-    const newCategories = missingCategories.map((cat, index) => ({
-        ...cat,
-        id: maxId + index + 1,
-        createdAt: nowIso,
-        updatedAt: nowIso,
-    }));
-
-    const updatedCategories = [...currentCategories, ...newCategories];
-    saveData(DB_KEYS.SUBCATEGORIES, updatedCategories);
-
-    loadCategories();
-    populateSubCategoryDropdown();
-    alert(
-        `Successfully added ${newCategories.length} category(ies)!\n\nAdded:\n${newCategories.map((c) => '• ' + c.name).join('\n')}`,
-    );
 }
 
 function onMainCategoryChange() {
@@ -1625,7 +1913,7 @@ function importMenuFromExcel(event) {
     const file = event.target.files[0];
     if (!file) return;
     if (typeof XLSX === 'undefined') {
-        alert('Excel library is not loaded.');
+        alert('Excel library is not loaded. Please refresh the page.');
         return;
     }
 
@@ -1635,39 +1923,83 @@ function importMenuFromExcel(event) {
             const workbook = XLSX.read(e.target.result, { type: 'binary' });
             const sheet = workbook.Sheets[workbook.SheetNames[0]];
             const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+
             if (!rows.length) {
-                alert('No rows found in Excel file.');
+                alert('No data found in the Excel file.');
+                event.target.value = '';
                 return;
             }
 
             const products = getData(DB_KEYS.PRODUCTS);
+            const mainCategories = getData(DB_KEYS.MAIN_CATEGORIES);
+            const subCategories = getData(DB_KEYS.SUBCATEGORIES);
+            const mainCatNames = mainCategories.map((c) => c.name);
+            const subCatNames = subCategories.map((c) => c.name);
+
             const nowIso = new Date().toISOString();
+            let addedCount = 0;
+            let skippedCount = 0;
+            const skippedItems = [];
+
             rows.forEach((row) => {
                 const name = row.Name || row.name;
-                if (!name) return;
+                if (!name) {
+                    skippedCount++;
+                    return;
+                }
+
                 const price = parseFloat(row.Price ?? row.price ?? 0);
-                const mainCategory = row.Category || row.category || 'Drink';
+                if (Number.isNaN(price) || price < 0) {
+                    skippedCount++;
+                    skippedItems.push(name + ' (invalid price)');
+                    return;
+                }
+
+                let mainCategory = row.Category || row.category || 'Drink';
+                if (!mainCatNames.includes(mainCategory)) {
+                    skippedCount++;
+                    skippedItems.push(name + ' (invalid category: ' + mainCategory + ')');
+                    return;
+                }
+
                 const subCategory = row.Subcategory || row.SubCategory || row.subCategory || '';
+                if (subCategory && !subCatNames.includes(subCategory)) {
+                    skippedCount++;
+                    skippedItems.push(name + ' (invalid subcategory: ' + subCategory + ')');
+                    return;
+                }
+
                 products.push({
                     id: generateId(DB_KEYS.PRODUCTS),
                     name: String(name),
                     name_am: String(row.NameAm || row.name_am || ''),
                     description: String(row.Description || row.description || ''),
                     description_am: String(row.DescriptionAm || row.description_am || ''),
-                    price: Number.isNaN(price) ? 0 : price,
+                    price: price,
                     image: String(row.Image || row.image || 'https://via.placeholder.com/170'),
                     mainCategory: String(mainCategory),
                     subCategory: String(subCategory),
                     category: String(subCategory || mainCategory),
+                    sortOrder: products.length + 1,
                     createdAt: nowIso,
                     updatedAt: nowIso,
                 });
+                addedCount++;
             });
 
             saveData(DB_KEYS.PRODUCTS, products);
             loadMenuItems();
             loadDashboard();
-            alert('Menu items imported from Excel successfully.');
+            populateSubCategoryDropdown();
+
+            let message = `Successfully imported ${addedCount} product(s).`;
+            if (skippedCount > 0) {
+                message += `\n\nSkipped ${skippedCount} item(s):\n` + skippedItems.slice(0, 10).join('\n');
+                if (skippedItems.length > 10) {
+                    message += `\n...and ${skippedItems.length - 10} more.`;
+                }
+            }
+            alert(message);
         } catch (error) {
             alert('Failed to import Excel: ' + error.message);
         } finally {
@@ -1689,6 +2021,7 @@ window.exportData = exportData;
 window.importData = importData;
 window.resetData = resetData;
 window.filterMenu = filterMenu;
+window.togglePaymentStatus = togglePaymentStatus;
 window.filterCategories = filterCategories;
 window.onMainCategoryChange = onMainCategoryChange;
 window.handleImageUpload = handleImageUpload;
@@ -1704,3 +2037,103 @@ window.deleteAdminAccount = deleteAdminAccount;
 window.startEditAccount = startEditAccount;
 window.saveEditedAccount = saveEditedAccount;
 window.cancelEditAccount = cancelEditAccount;
+window.changeMenuPage = changeMenuPage;
+window.toggleAddCategoryDropdown = toggleAddCategoryDropdown;
+window.importCategoriesFromExcel = importCategoriesFromExcel;
+
+function toggleAddCategoryDropdown() {
+    const dropdown = document.getElementById('addCategoryDropdown');
+    if (dropdown) {
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    }
+}
+
+document.addEventListener('click', function (event) {
+    const dropdown = document.getElementById('addCategoryDropdown');
+    const button = event.target.closest('.dropdown > button');
+    if (!button && dropdown && !dropdown.contains(event.target)) {
+        dropdown.style.display = 'none';
+    }
+});
+
+function importCategoriesFromExcel(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        try {
+            const data = e.target.result;
+            const workbook = XLSX.read(data, { type: 'binary' });
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            const rows = XLSX.utils.sheet_to_json(sheet);
+
+            if (rows.length === 0) {
+                alert('No data found in the Excel file.');
+                event.target.value = '';
+                return;
+            }
+
+            const mainCategories = getData(DB_KEYS.MAIN_CATEGORIES);
+            const mainCatNames = mainCategories.map((c) => c.name);
+
+            const existingCategories = getData(DB_KEYS.SUBCATEGORIES);
+            const existingNames = new Set(existingCategories.map((c) => c.name.toLowerCase()));
+
+            const nowIso = new Date().toISOString();
+            let addedCount = 0;
+            let skippedCount = 0;
+
+            rows.forEach((row) => {
+                const name = row.Name || row.name || row['Sub Category'] || row['Subcategory'];
+                if (!name) {
+                    skippedCount++;
+                    return;
+                }
+
+                if (existingNames.has(String(name).toLowerCase())) {
+                    skippedCount++;
+                    return;
+                }
+
+                const mainCategory = row.MainCategory || row['Main Category'] || row.mainCategory || 'Drink';
+                if (!mainCatNames.includes(mainCategory)) {
+                    skippedCount++;
+                    return;
+                }
+
+                const sortOrder = existingCategories.length + addedCount + 1;
+
+                existingCategories.push({
+                    id: generateId(DB_KEYS.SUBCATEGORIES),
+                    name: String(name),
+                    name_am: String(row.NameAm || row.name_am || ''),
+                    mainCategory: String(mainCategory),
+                    icon: String(row.Icon || row.icon || 'other'),
+                    sortOrder: Number.isInteger(row['Sort Order']) ? row['Sort Order'] : sortOrder,
+                    createdAt: nowIso,
+                    updatedAt: nowIso,
+                });
+
+                existingNames.add(String(name).toLowerCase());
+                addedCount++;
+            });
+
+            saveData(DB_KEYS.SUBCATEGORIES, existingCategories);
+            loadCategories();
+            filterCategories();
+
+            let message = `Successfully imported ${addedCount} categorie(s).`;
+            if (skippedCount > 0) {
+                message += ` Skipped ${skippedCount} duplicate or invalid entrie(s).`;
+            }
+            alert(message);
+        } catch (error) {
+            alert('Failed to import Excel: ' + error.message);
+        } finally {
+            event.target.value = '';
+        }
+    };
+    reader.readAsBinaryString(file);
+}

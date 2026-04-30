@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Menu Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .product { border: 1px solid #ddd; padding: 10px; margin: 10px 0; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>Simple Menu Test</h1>
+    <div id="status">Loading...</div>
+    <div id="products"></div>
+    
+    <script src="data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const status = document.getElementById('status');
+            const productsDiv = document.getElementById('products');
+            
+            try {
+                status.innerHTML = 'Initializing menu database...';
+                initMenuDatabase();
+                
+                status.innerHTML = 'Getting menu data...';
+                const menuData = getMenuData();
+                
+                if (menuData && menuData.products && menuData.products.length > 0) {
+                    status.innerHTML = `<span class="success">SUCCESS: Found ${menuData.products.length} products</span>`;
+                    
+                    // Display first 5 products
+                    const firstFive = menuData.products.slice(0, 5);
+                    productsDiv.innerHTML = firstFive.map(product => `
+                        <div class="product">
+                            <h3>${product.Name}</h3>
+                            <p>Category: ${product.Category} - ${product.SubCategory}</p>
+                            <p>Price: ${product.Price} Br</p>
+                            <p>Image: ${product.Image}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    status.innerHTML = '<span class="error">ERROR: No products found</span>';
+                }
+            } catch (error) {
+                status.innerHTML = `<span class="error">ERROR: ${error.message}</span>`;
+                console.error('Test error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

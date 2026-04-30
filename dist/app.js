@@ -19,6 +19,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.menuData = getMenuData();
     console.log('App.js - Menu data loaded:', window.menuData.products?.length || 0, 'products');
+    
+    // Update debug info
+    const debugInfo = document.getElementById('debug-info');
+    if (debugInfo) {
+        debugInfo.innerHTML = `
+            <strong>DEBUG INFO:</strong><br>
+            embeddedMenuData length: ${typeof embeddedMenuData !== 'undefined' ? embeddedMenuData.length : 'undefined'}<br>
+            window.menuData.products length: ${window.menuData.products?.length || 0}<br>
+            window.menuData.specials length: ${window.menuData.specials?.length || 0}<br>
+            localStorage products: ${localStorage.getItem('begotas_products')?.length || 0} chars<br>
+            localStorage specials: ${localStorage.getItem('begotas_specials')?.length || 0} chars<br>
+            First product: ${window.menuData.products?.[0]?.Name || 'N/A'}<br>
+            First product image: ${window.menuData.products?.[0]?.Image || 'N/A'}
+        `;
+    }
+    
     window.menuData.subCategories = window.menuData.subCategories || [];
     window.menuData.specials = (window.menuData.specials || []).filter((s) => s.available !== false);
 

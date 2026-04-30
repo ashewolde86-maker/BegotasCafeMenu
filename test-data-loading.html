@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Data Loading</title>
+</head>
+<body>
+    <h1>Testing Menu Data Loading</h1>
+    <div id="output"></div>
+    
+    <script src="data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const output = document.getElementById('output');
+            
+            try {
+                // Test loading menu data
+                await initMenuDatabase();
+                const menuData = await getMenuData();
+                
+                output.innerHTML = `
+                    <h2>Data Loading Results:</h2>
+                    <p>Products loaded: ${menuData.products.length}</p>
+                    <p>Specials loaded: ${menuData.specials.length}</p>
+                    <p>Main categories: ${menuData.mainCategories.length}</p>
+                    <h3>First 3 products:</h3>
+                    <pre>${JSON.stringify(menuData.products.slice(0, 3), null, 2)}</pre>
+                `;
+                
+                console.log('Menu data loaded successfully:', menuData);
+            } catch (error) {
+                output.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+                console.error('Error loading menu data:', error);
+            }
+        });
+    </script>
+</body>
+</html>

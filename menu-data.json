@@ -1,0 +1,1074 @@
+[
+ {
+  "SubCategory": "Burger",
+  "Category": "Food",
+  "Image": "images\/Products\/Burger_Special.jpg",
+  "Name": "Begotas Special Burger",
+  "NameAm": "ስፔሻል በርገር",
+  "Price": 450
+ },
+ {
+  "SubCategory": "Burger",
+  "Category": "Food",
+  "Image": "images\/Products\/Burger_Cheese.jpg",
+  "Name": "Cheese Burger",
+  "NameAm": "ቺዝ በርገር",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Burger",
+  "Category": "Food",
+  "Image": "images\/Products\/Burger_Doubleking.jpg",
+  "Name": "Double King Burger",
+  "NameAm": "ደብል ክንግ በርገር",
+  "Price": 550
+ },
+ {
+  "SubCategory": "Burger",
+  "Category": "Food",
+  "Image": "images\/Products\/Burger_Chicken.jpg",
+  "Name": "Chicken Burger",
+  "NameAm": "ቺክን በርገር",
+  "Price": 550
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Soft.jpg",
+  "Name": "Soft Cake",
+  "NameAm": "ለስላሳ ኬክ",
+  "Price": 90
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Cream.jpg",
+  "Name": "Cream Cake",
+  "NameAm": "ክሬም ኬክ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Chocolate.jpg",
+  "Name": "Chocolate Cake",
+  "NameAm": "ቼኮለታ ኬክ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Caramel.jpg",
+  "Name": "Caramel Cake",
+  "NameAm": "ካራሜል ኬክ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_strawberry.jpg",
+  "Name": "Strawberry Cake",
+  "NameAm": "እንጆሪ ኬክ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Tiramisu.jpg",
+  "Name": "Teramisu Cake",
+  "NameAm": "ቴራሚሱ ኬክ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Cup.jpg",
+  "Name": "Cup Cake",
+  "NameAm": "ካፕ ኬክ",
+  "Price": 80
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Donut.jpg",
+  "Name": "Donut",
+  "NameAm": "ዶናት",
+  "Price": 80
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Bonbolino.jpg",
+  "Name": "Bonbolino",
+  "NameAm": "ቦንቦሊኖ",
+  "Price": 50
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Milfoni.jpg",
+  "Name": "Milfoni Cake",
+  "NameAm": "ሚልፎኒ ኬክ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_CreamPuffis.jpg",
+  "Name": "Cream Puffs",
+  "NameAm": "ቦክሰኛ ኬክ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Tortacircle.jpg",
+  "Name": "Torta Circle 1kg",
+  "NameAm": "ቶርታ ክብ 1ኪግ",
+  "Price": 1300
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images\/Products\/Cake_Tortarectangle.jpg",
+  "Name": "Torta Rectangle 1kg",
+  "NameAm": "ቶርታ 4ማዕዘን 1ኪግ",
+  "Price": 1500
+ },
+ {
+  "SubCategory": "Chicken",
+  "Category": "Food",
+  "Image": "images\/Products\/Chicken_Tenders.jpg",
+  "Name": "Chicken Tenders",
+  "NameAm": "ቺክን  ቴንደርስ",
+  "Price": 600
+ },
+ {
+  "SubCategory": "Chicken",
+  "Category": "Food",
+  "Image": "images\/Products\/Chicken_Wings.jpg",
+  "Name": "Chicken Wings",
+  "NameAm": "ቺክን ዊንግስ",
+  "Price": 600
+ },
+ {
+  "SubCategory": "Chicken",
+  "Category": "Food",
+  "Image": "images\/Products\/Chicken_Nuggets.jpg",
+  "Name": "Chicken Nuggets",
+  "NameAm": "ቺክን ዊንግስ",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Chicken",
+  "Category": "Food",
+  "Image": "images\/Products\/Chicken_Roasted.jpg",
+  "Name": "Roasted Chicken",
+  "NameAm": "ሮስትድ ቺክን",
+  "Price": 700
+ },
+ {
+  "SubCategory": "Chicken",
+  "Category": "Food",
+  "Image": "images\/Products\/Chicken_Breast.jpg",
+  "Name": "Chicken Breast",
+  "NameAm": "ቺክን ብረሰት",
+  "Price": 700
+ },
+ {
+  "SubCategory": "Chicken",
+  "Category": "Food",
+  "Image": "images\/Products\/Chicken_Fingers.jpg",
+  "Name": "Chicken Fingers",
+  "NameAm": "ቺክን ፍንገር",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Extra",
+  "Category": "Extra",
+  "Image": "images\/Products\/ExtraBread.jpg",
+  "Name": "Bread",
+  "NameAm": "ዳቦ",
+  "Price": 30
+ },
+ {
+  "SubCategory": "Extra",
+  "Category": "Extra",
+  "Image": "images\/Products\/Extra_Injera.jpg",
+  "Name": "Injera",
+  "NameAm": "እንጀራ",
+  "Price": 30
+ },
+ {
+  "SubCategory": "Extra",
+  "Category": "Extra",
+  "Image": "images\/Products\/Extrea_Cup.jpg",
+  "Name": "Coffee Cup",
+  "NameAm": "የቡና ካፕ",
+  "Price": 30
+ },
+ {
+  "SubCategory": "Extra",
+  "Category": "Extra",
+  "Image": "images\/Products\/Extra_Juicecup.jpg",
+  "Name": "Juice Cup",
+  "NameAm": "የጁስ ካፕ",
+  "Price": 30
+ },
+ {
+  "SubCategory": "Extra",
+  "Category": "Extra",
+  "Image": "images\/Products\/Extra_Foil.jpg",
+  "Name": "Foil",
+  "NameAm": "ፎይል",
+  "Price": 30
+ },
+ {
+  "SubCategory": "Fish",
+  "Category": "Food",
+  "Image": "images\/Products\/Fish_Gulash.jpg",
+  "Name": "Fish Goulash",
+  "NameAm": "ዓሣ ጉላሽ",
+  "Price": 450
+ },
+ {
+  "SubCategory": "Fish",
+  "Category": "Food",
+  "Image": "images\/Products\/Fish_Cutlet.jpg",
+  "Name": "Fish Cutlet",
+  "NameAm": "ዓሣ ኮቴለት",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Fish",
+  "Category": "Food",
+  "Image": "images\/Products\/Fish_Lebleb.jpg",
+  "Name": "Fish Lebleb",
+  "NameAm": "ዓሣ ለብለብ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Fish",
+  "Category": "Food",
+  "Image": "images\/Products\/Fish_Dulet.jpg",
+  "Name": "Fish Dulet",
+  "NameAm": "ዓሣ ዱለት",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Machine_Coffee.jpg",
+  "Name": "Coffee",
+  "NameAm": "ቡና",
+  "Price": 50
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Jebena_coffee.jpg",
+  "Name": "Jebena Coffee",
+  "NameAm": "የጀበና ቡና",
+  "Price": 40
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Macchiato.jpg",
+  "Name": "Macchiato",
+  "NameAm": "ማክያቶ",
+  "Price": 70
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Caramel_Machiato.jpg",
+  "Name": "Caramel Macchiato",
+  "NameAm": "ካራሜል ማክያቶ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Fasting_Machiatto.jpg",
+  "Name": "Fasting Macchiato",
+  "NameAm": "የፆም ማክያቶ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Cappuccino.jpg",
+  "Name": "Cappucino",
+  "NameAm": "ካፑቺኖ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Milk.jpg",
+  "Name": "Milk",
+  "NameAm": "ወተት",
+  "Price": 70
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_SprizeTea.jpg",
+  "Name": "Spris",
+  "NameAm": "ስፕሪስ",
+  "Price": 50
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Tea.jpg",
+  "Name": "Tea",
+  "NameAm": "ሻይ",
+  "Price": 40
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Specialtea.jpg",
+  "Name": "Special Tea",
+  "NameAm": "ስፔሻል ሻይ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Peneaple_Tea.jpg",
+  "Name": "Pineapple Tea",
+  "NameAm": "አናናስ ሻይ",
+  "Price": 60
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Orange_Tea.jpg",
+  "Name": "Orange Tea",
+  "NameAm": "ብርቱካን ሻይ",
+  "Price": 60
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Lemontea.jpg",
+  "Name": "Lemon Tea",
+  "NameAm": "ሻይ በሎሚ",
+  "Price": 60
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Gingertea.jpg",
+  "Name": "Ginger Tea",
+  "NameAm": "ቀሽር ሻይ",
+  "Price": 40
+ },
+ {
+  "SubCategory": "Hot Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Hot_Peanut_coffeee.jpg",
+  "Name": "Peanut Tea",
+  "NameAm": "ለውዝ ሻይ",
+  "Price": 70
+ },
+ {
+  "SubCategory": "Iced Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Iced_Latte.jpg",
+  "Name": "Iced Latte",
+  "NameAm": "በረዶ ላቴ",
+  "Price": 180
+ },
+ {
+  "SubCategory": "Iced Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Iced_Mocha.jpg",
+  "Name": "Iced Mocha",
+  "NameAm": "በረዶ ሞቻ",
+  "Price": 190
+ },
+ {
+  "SubCategory": "Iced Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Iced_Caramel.jpg",
+  "Name": "Iced Caramela",
+  "NameAm": "በረዶ ካራሜል",
+  "Price": 200
+ },
+ {
+  "SubCategory": "Iced Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Iced_Coffee.jpg",
+  "Name": "Iced Coffee",
+  "NameAm": "በረዶ ቡና",
+  "Price": 150
+ },
+ {
+  "SubCategory": "Normal Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Juice_Special.jpg",
+  "Name": "Begotas Special Juice",
+  "NameAm": "በጎታስ ስፔሻል ጁስ",
+  "Price": 150
+ },
+ {
+  "SubCategory": "Normal Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Juice_Telba.jpg",
+  "Name": "Talba Juice",
+  "NameAm": "ተልባ ጁስ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Normal Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Juice_Avocado.jpg",
+  "Name": "Avocado Juice",
+  "NameAm": "አቮካዶ ጁስ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Normal Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Juice_Mango Juice.jpg",
+  "Name": "Mango Juice",
+  "NameAm": "ማንጎ ጁስ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Normal Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Juice_Papaya.jpg",
+  "Name": "Papaya Juice",
+  "NameAm": "ፓፓያ ጁስ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Normal Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Juice_Pineaple.jpg",
+  "Name": "Pineapple Juice",
+  "NameAm": "አናናስ ጁስ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Normal Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Juice_Orange.jpg",
+  "Name": "Orange Juice",
+  "NameAm": "ብርቱካን ጁስ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Normal Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Juice_strawberry.jpg",
+  "Name": "Strawberry Juice",
+  "NameAm": "እንጆሪ ጁስ",
+  "Price": 130
+ },
+ {
+  "SubCategory": "Normal Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Juice_Spris.jpg",
+  "Name": "Mixed Juice",
+  "NameAm": "ስፕሪስ ጁስ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Normal Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Juice_watermelon.jpg",
+  "Name": "Watermelon Juice",
+  "NameAm": "ሀባብ ጁስ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Pasta & Rice",
+  "Category": "Food",
+  "Image": "images\/Products\/Pasta_Meat.jpg",
+  "Name": "Pasta with Meat",
+  "NameAm": "ፓስታ በሥጋ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Pasta & Rice",
+  "Category": "Food",
+  "Image": "images\/Products\/Pasta_Eag.jpg",
+  "Name": "Pasta with Egg",
+  "NameAm": "ፓስታ እንቁላል",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Pasta & Rice",
+  "Category": "Food",
+  "Image": "images\/Products\/Pasta_Veg.jpg",
+  "Name": "Pasta with Vegetable",
+  "NameAm": "ፓስታ በአትክልት",
+  "Price": 250
+ },
+ {
+  "SubCategory": "Pasta & Rice",
+  "Category": "Food",
+  "Image": "images\/Products\/Pasta_Soos.jpg",
+  "Name": "Pasta with Tomato Sos",
+  "NameAm": "ፓስታ በቲማቲም",
+  "Price": 250
+ },
+ {
+  "SubCategory": "Pasta & Rice",
+  "Category": "Food",
+  "Image": "images\/Products\/Pasta_Tuna.jpg",
+  "Name": "Pasta with Tuna",
+  "NameAm": "ፓስታ በቱና",
+  "Price": 450
+ },
+ {
+  "SubCategory": "Pasta & Rice",
+  "Category": "Food",
+  "Image": "images\/Products\/Rice_Meat.jpg",
+  "Name": "Rice with Meat",
+  "NameAm": "ሩዝ በሥጋ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Pasta & Rice",
+  "Category": "Food",
+  "Image": "images\/Products\/Rice_Vegetable.jpeg",
+  "Name": "Rice with Vegetable",
+  "NameAm": "ሩዝ በአትክልት",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Pizza",
+  "Category": "Food",
+  "Image": "images\/Products\/Pizza_Special.jpg",
+  "Name": "Begotas Special Pizza",
+  "NameAm": "ስፔሻል ፒዛ",
+  "Price": 650
+ },
+ {
+  "SubCategory": "Pizza",
+  "Category": "Food",
+  "Image": "images\/Products\/Pizza_Cheese.jpg",
+  "Name": "Cheese Pizza",
+  "NameAm": "ቺዝ ፒዛ",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Pizza",
+  "Category": "Food",
+  "Image": "images\/Products\/Pizza_Margherita.jpg",
+  "Name": "Margherita Pizza",
+  "NameAm": "ማረጋሬታ ፒዛ",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Pizza",
+  "Category": "Food",
+  "Image": "images\/Products\/Pizza_Tuna.jpg",
+  "Name": "Tuna Pizza",
+  "NameAm": "ቱና ፒዛ",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Pizza",
+  "Category": "Food",
+  "Image": "images\/Products\/Pizza_fasting.jpg",
+  "Name": "Fasting Pizza",
+  "NameAm": "ፋስቲንግ ፒዛ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Pizza",
+  "Category": "Food",
+  "Image": "images\/Products\/Pizza_Vegetable.jpg",
+  "Name": "Vegetable Pizza",
+  "NameAm": "የአትክልት ፒዛ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Pizza",
+  "Category": "Food",
+  "Image": "images\/Products\/Pizza_Chicken.jpg",
+  "Name": "Chicken Pizza",
+  "NameAm": "ቺክን ፒዛ",
+  "Price": 750
+ },
+ {
+  "SubCategory": "Salad",
+  "Category": "Food",
+  "Image": "images\/Products\/Salad_Special.jpg",
+  "Name": "Begotas Sepecial Salad",
+  "NameAm": "ስፔሻል ሳላድ",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Salad",
+  "Category": "Food",
+  "Image": "images\/Products\/Salad_Mixed.jpg",
+  "Name": "Mixed Salad",
+  "NameAm": "ድብልቅ ሳላድ",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Salad",
+  "Category": "Food",
+  "Image": "images\/Products\/Salad_Chicken.jpg",
+  "Name": "Chicken Salad",
+  "NameAm": "ዶሮ ሳላድ",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Salad",
+  "Category": "Food",
+  "Image": "images\/Products\/Salad_Tuna.jpg",
+  "Name": "Tuna Salad",
+  "NameAm": "ቱና ሳላድ",
+  "Price": 450
+ },
+ {
+  "SubCategory": "Salad",
+  "Category": "Food",
+  "Image": "images\/Products\/Salad_Vegetable.jpg",
+  "Name": "Vegetable Salad",
+  "NameAm": "አትክልት ሳላድ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Salad",
+  "Category": "Food",
+  "Image": "images\/Products\/Salad_Fruit.jpg",
+  "Name": "Fruit Salad",
+  "NameAm": "ፍሩት ሳላድ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Salad",
+  "Category": "Food",
+  "Image": "images\/Products\/Salad_Beef.jpg",
+  "Name": "Beef Salad",
+  "NameAm": "ስጋ ሳላድ",
+  "Price": 450
+ },
+ {
+  "SubCategory": "Sandwich",
+  "Category": "Food",
+  "Image": "images\/Products\/Sandwich_Special.jpg",
+  "Name": "Begotas Special Sandwich",
+  "NameAm": "ስፔሻል ሳንዱዊች",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Sandwich",
+  "Category": "Food",
+  "Image": "images\/Products\/Sandwich_Club.jpg",
+  "Name": "Club Sandwich",
+  "NameAm": "ክለብ ሳንዱዊች",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Sandwich",
+  "Category": "Food",
+  "Image": "images\/Products\/Sandwich_Egg.jpg",
+  "Name": "Egg Sandwich",
+  "NameAm": "እንቁላል ሳንዱዊች",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Sandwich",
+  "Category": "Food",
+  "Image": "images\/Products\/Sandwich_Cheese.jpg",
+  "Name": "Cheese Sandwich",
+  "NameAm": "ቺዝ ሳንዱዊች",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Sandwich",
+  "Category": "Food",
+  "Image": "images\/Products\/Sandwich_Vegetable.jpg",
+  "Name": "Vegetable Sandwich",
+  "NameAm": "አትክልት ሳንዱዊች",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Sandwich",
+  "Category": "Food",
+  "Image": "images\/Products\/Sandwich_Tuna.jpg",
+  "Name": "Tuna Sandwich",
+  "NameAm": "ቱና ሳንዱዊች",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Sandwich",
+  "Category": "Food",
+  "Image": "images\/Products\/Sandwich_Meat.jpg",
+  "Name": "Beef Sandwich",
+  "NameAm": "የስጋ ሳንዱዊች",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Shake Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Shake_Caramel_Milkshake.jpg",
+  "Name": "Milkshake",
+  "NameAm": "ሚልክ ጁስ",
+  "Price": 180
+ },
+ {
+  "SubCategory": "Shake Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Shake_Bananamilkshake.jpg",
+  "Name": "Banana Milkshake",
+  "NameAm": "ሙዝ ሚልክ ሼክ",
+  "Price": 180
+ },
+ {
+  "SubCategory": "Shake Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Shake_Avocado.jpg",
+  "Name": "Avocado Milkshake",
+  "NameAm": "አቮካዶ ሚልክ ሼክ",
+  "Price": 180
+ },
+ {
+  "SubCategory": "Shake Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Shake_Mango.jpg",
+  "Name": "Mango Milkshake",
+  "NameAm": "ማንጎ ሚልክ ሼክ",
+  "Price": 180
+ },
+ {
+  "SubCategory": "Shake Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Shake_Papaya shake.jpg",
+  "Name": "Papaya Milkshake",
+  "NameAm": "ፓፓያ ሚልክ ሼክ",
+  "Price": 180
+ },
+ {
+  "SubCategory": "Shake Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Shake_watermelon.jpg",
+  "Name": "Pineapple Milkshake",
+  "NameAm": "አናናስ ሚልክ ሼክ",
+  "Price": 190
+ },
+ {
+  "SubCategory": "Shake Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Shake_Strawberry.jpg",
+  "Name": "Strawberry Milkshake",
+  "NameAm": "እንጆሪ ሚልክ ሼክ",
+  "Price": 190
+ },
+ {
+  "SubCategory": "Shake Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Shake_chocolate.jpg",
+  "Name": "Chocolate Milkshake",
+  "NameAm": "ቸኮሌት ሚልክ ሼክ",
+  "Price": 200
+ },
+ {
+  "SubCategory": "Shake Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Shake_Oreo.jpg",
+  "Name": "Oreo Milkshake",
+  "NameAm": "ቫኒላ ሚልክ ሼክ",
+  "Price": 200
+ },
+ {
+  "SubCategory": "Shake Juice",
+  "Category": "Drink",
+  "Image": "images\/Products\/Shake_Fruitpunch.jpg",
+  "Name": "Fruit Punch",
+  "NameAm": "ፍራፍሬ ቁርጥ",
+  "Price": 350
+ },
+ {
+  "SubCategory": "Shawarma & Wrap",
+  "Category": "Food",
+  "Image": "images\/Products\/Shawarma_Special.jpg",
+  "Name": "Special Shawarma",
+  "NameAm": "ስፔሻል ሻዋሪማ",
+  "Price": 550
+ },
+ {
+  "SubCategory": "Shawarma & Wrap",
+  "Category": "Food",
+  "Image": "images\/Products\/Shawarma_Beef.jpg",
+  "Name": "Beef Shawarma",
+  "NameAm": "ስጋ ሻዋሪማ",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Shawarma & Wrap",
+  "Category": "Food",
+  "Image": "images\/Products\/Shawarma_Chicken.jpg",
+  "Name": "Chicken Shawarma",
+  "NameAm": "ዶሮ ሻዋሪማ",
+  "Price": 550
+ },
+ {
+  "SubCategory": "Soft Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Softdrink_Water.jpg",
+  "Name": "Water 2L",
+  "NameAm": "ውሃ 2ሊ",
+  "Price": 65
+ },
+ {
+  "SubCategory": "Soft Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Softdrink_Water_One.jpg",
+  "Name": "Water 1L",
+  "NameAm": "ውሃ 1ሊ",
+  "Price": 50
+ },
+ {
+  "SubCategory": "Soft Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Softdrink_Water_Half.jpg",
+  "Name": "Water 1\/2L",
+  "NameAm": "ውሃ 1\/2ሊ",
+  "Price": 35
+ },
+ {
+  "SubCategory": "Soft Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Softdrink.jpg",
+  "Name": "Soft Drink",
+  "NameAm": "ለስላሳ መጠጥ",
+  "Price": 50
+ },
+ {
+  "SubCategory": "Soft Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Softdrink_Ambo.jpg",
+  "Name": "Ambo Mineral",
+  "NameAm": "አምቦ ውሃ",
+  "Price": 50
+ },
+ {
+  "SubCategory": "Soft Drinks",
+  "Category": "Drink",
+  "Image": "images\/Products\/Softdrink_Sofi Malt.jpg",
+  "Name": "Sofi Malt",
+  "NameAm": "ሶፊ ማልት",
+  "Price": 90
+ },
+ {
+  "SubCategory": "Soups",
+  "Category": "Food",
+  "Image": "images\/Products\/Soup_Vegetable.jpg",
+  "Name": "Vegetable Soup",
+  "NameAm": "አትክልት ሾርባ",
+  "Price": 200
+ },
+ {
+  "SubCategory": "Soups",
+  "Category": "Food",
+  "Image": "images\/Products\/Soup_Fisherman.jpg",
+  "Name": "Fisherman Soup",
+  "NameAm": "ዓሳ ሾርባ",
+  "Price": 350
+ },
+ {
+  "SubCategory": "Soups",
+  "Category": "Food",
+  "Image": "images\/Products\/Soup_Chicken.jpg",
+  "Name": "Chicken Soup",
+  "NameAm": "ዶሮ ሾርባ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Special_Combo.jpg",
+  "Name": "Begotas Special Combo",
+  "NameAm": "በጎታስ ስፔሻል ኮምቦ",
+  "Price": 1400
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Tibs_Special.jpg",
+  "Name": "Special Tibs",
+  "NameAm": "ስፔሻል ጥብስ",
+  "Price": 1000
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Tibs_Fried_Meat.jpg",
+  "Name": "Tibs[Fried Meat]",
+  "NameAm": "መረቅ ጥብስ",
+  "Price": 500
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_TibsFirfr.jpg",
+  "Name": "Tibs  Firfir",
+  "NameAm": "ጥብስ ፍርፍር",
+  "Price": 450
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_TibsSigaFirfir.jpg",
+  "Name": "Meat Firfir",
+  "NameAm": "ስጋ ፍርፍር",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Teferisho.jpg",
+  "Name": "Teferisho",
+  "NameAm": "ተፈርሾ",
+  "Price": 450
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Kuanta_Firfir.jpg",
+  "Name": "Kuanta Firfir",
+  "NameAm": "ቋንጣ ፍርፍር",
+  "Price": 450
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Kitifo.jpg",
+  "Name": "Kitifo",
+  "NameAm": "ክትፎ",
+  "Price": 700
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Shiro.jpg",
+  "Name": "Shiro",
+  "NameAm": "አትክልት በእንቁላል",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Shiro_Tegabino.jpg",
+  "Name": "Tegabino",
+  "NameAm": "ተጋቢኖ",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Beyeaynet.jpg",
+  "Name": "Beyeaynet",
+  "NameAm": "በየዓይነት",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Chechebsa_Normal.jpg",
+  "Name": "Normal Vegetable",
+  "NameAm": "ኖርማል አትክልት",
+  "Price": 200
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Vegetable_Eag.jpg",
+  "Name": "Vegetable with Egg",
+  "NameAm": "አትክልት ",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Vegetable_Meat.jpg",
+  "Name": "Vegetable with Meat",
+  "NameAm": "አትክልት በስጋ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Chechebsa_Special.jpg",
+  "Name": "Special Chachebsa",
+  "NameAm": "ስፔሻል ጨጨብሳ",
+  "Price": 350
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Chechebsa_Normal.jpg",
+  "Name": "Normal Chachebsa",
+  "NameAm": "ኖርማል ጨጨብሳ",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Fetira_Special.jpg",
+  "Name": "Special Fetira",
+  "NameAm": "ስፔሻል ፈጢራ",
+  "Price": 350
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Fatira_Normal.jpg",
+  "Name": "Normal Fetira",
+  "NameAm": "ኖርማል ፈጢራ",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Egg_scrambled.jpg",
+  "Name": "Scrambled Eggs",
+  "NameAm": "እንቁላል ፍርፍር",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Egg_Sos.jpg",
+  "Name": "Egg with Tomatos",
+  "NameAm": "እንቁላል ስልስ",
+  "Price": 300
+ },
+ {
+  "SubCategory": "Traditional Dish",
+  "Category": "Food",
+  "Image": "images\/Products\/Traditional_Egg-With-Meat.jpg",
+  "Name": "Egg with Beef",
+  "NameAm": "እንቁላል በስጋ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Shawarma & Wrap",
+  "Category": "Food",
+  "Image": "images\/Products\/Wrap_Beef.jpg",
+  "Name": "Beef Wrap",
+  "NameAm": "የስጋ ራፕ",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Shawarma & Wrap",
+  "Category": "Food",
+  "Image": "images\/Products\/Wrap_Chicken.jpg",
+  "Name": "Chicken Wrap",
+  "NameAm": "የዶሮ ራፕ",
+  "Price": 500
+ }
+]

@@ -45,18 +45,40 @@ const defaultMenuData = {
     },
 };
 
-function initMenuDatabase() {
+async function loadMenuDataFromFile() {
+    try {
+        const response = await fetch('menu-data.json');
+        if (!response.ok) {
+            console.warn('Could not load menu-data.json, using defaults');
+            return defaultMenuData;
+        }
+        const data = await response.json();
+        return {
+            ...defaultMenuData,
+            products: data || [],
+            specials: []
+        };
+    } catch (error) {
+        console.warn('Error loading menu data:', error);
+        return defaultMenuData;
+    }
+}
+
+async function initMenuDatabase() {
+    // Load menu data from JSON file
+    const menuData = await loadMenuDataFromFile();
+    
     if (!localStorage.getItem(DB_KEYS.PRODUCTS) || localStorage.getItem(DB_KEYS.PRODUCTS) === '[]') {
-        localStorage.setItem(DB_KEYS.PRODUCTS, JSON.stringify(defaultMenuData.products));
+        localStorage.setItem(DB_KEYS.PRODUCTS, JSON.stringify(menuData.products));
     }
     if (!localStorage.getItem(DB_KEYS.SPECIALS) || localStorage.getItem(DB_KEYS.SPECIALS) === '[]') {
-        localStorage.setItem(DB_KEYS.SPECIALS, JSON.stringify(defaultMenuData.specials));
+        localStorage.setItem(DB_KEYS.SPECIALS, JSON.stringify(menuData.specials));
     }
     if (!localStorage.getItem(DB_KEYS.PAYMENT) || localStorage.getItem(DB_KEYS.PAYMENT) === '[]') {
-        localStorage.setItem(DB_KEYS.PAYMENT, JSON.stringify(defaultMenuData.payment));
+        localStorage.setItem(DB_KEYS.PAYMENT, JSON.stringify(menuData.payment));
     }
     if (!localStorage.getItem(DB_KEYS.RESTAURANT) || localStorage.getItem(DB_KEYS.RESTAURANT) === 'null') {
-        localStorage.setItem(DB_KEYS.RESTAURANT, JSON.stringify(defaultMenuData.restaurant));
+        localStorage.setItem(DB_KEYS.RESTAURANT, JSON.stringify(menuData.restaurant));
     }
     if (!localStorage.getItem(DB_KEYS.REVIEWS)) {
         localStorage.setItem(DB_KEYS.REVIEWS, JSON.stringify([]));
@@ -72,8 +94,8 @@ function initMenuDatabase() {
     }
 }
 
-function getMenuData() {
-    initMenuDatabase();
+async function getMenuData() {
+    await initMenuDatabase();
 
     const specials = JSON.parse(localStorage.getItem(DB_KEYS.SPECIALS) || '[]');
     const products = JSON.parse(localStorage.getItem(DB_KEYS.PRODUCTS) || '[]');
@@ -107,9 +129,9 @@ function syncMenuData() {
     return getMenuData();
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    initMenuDatabase();
-    window.menuData = getMenuData();
+document.addEventListener('DOMContentLoaded', async function () {
+    await initMenuDatabase();
+    window.menuData = await getMenuData();
     window.menuData.subCategories = getSubCategories();
     window.syncMenuData = syncMenuData;
 });

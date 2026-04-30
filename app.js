@@ -1,5 +1,5 @@
-document.addEventListener('DOMContentLoaded', function () {
-    initMenuDatabase();
+document.addEventListener('DOMContentLoaded', async function () {
+    await initMenuDatabase();
     initTranslations();
 
     let currentCategory = 'all';
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const carouselSlides = document.getElementById('carouselSlides');
     const carouselPagination = document.getElementById('carouselPagination');
 
-    window.menuData = getMenuData();
+    window.menuData = await getMenuData();
     window.menuData.subCategories = window.menuData.subCategories || [];
     window.menuData.specials = (window.menuData.specials || []).filter((s) => s.available !== false);
 

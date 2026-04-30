@@ -603,7 +603,7 @@ function updateMenuPagination(totalItems, totalPages) {
     }
 
     if (startPage > 1) {
-        paginationHTML += `<button class="pagination-btn" onclick="changeMenuPage(1)">1</button>`;
+        paginationHTML += '<button class="pagination-btn" onclick="changeMenuPage(1)">1</button>';
         if (startPage > 2) paginationHTML += '<span class="pagination-ellipsis">...</span>';
     }
 

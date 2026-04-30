@@ -10,25 +10,25 @@
     --bg-card: #1e1e1e;
     --text-light: #f5f5f5;
     --text-muted: #a0a0a0;
-    --text-dim: #666666;
-    --border: #333333;
-    --border-light: #444444;
-    --shadow: rgba(0, 0, 0, 0.3);
-    --shadow-lg: rgba(0, 0, 0, 0.5);
+    --text-dim: #666;
+    --border: #333;
+    --border-light: #444;
+    --shadow: rgb(0 0 0 / 30%);
+    --shadow-lg: rgb(0 0 0 / 50%);
 }
 
 [data-theme='light'] {
     --bg-dark: #f5f5f5;
-    --bg-dark-secondary: #ffffff;
+    --bg-dark-secondary: #fff;
     --bg-dark-tertiary: #f0f0f0;
-    --bg-card: #ffffff;
+    --bg-card: #fff;
     --text-light: #1a1a1a;
-    --text-muted: #555555;
-    --text-dim: #888888;
+    --text-muted: #555;
+    --text-dim: #888;
     --border: #e0e0e0;
-    --border-light: #cccccc;
-    --shadow: rgba(0, 0, 0, 0.1);
-    --shadow-lg: rgba(0, 0, 0, 0.15);
+    --border-light: #ccc;
+    --shadow: rgb(0 0 0 / 10%);
+    --shadow-lg: rgb(0 0 0 / 15%);
     --primary: #8b4513;
     --primary-dark: #6d3610;
 }
@@ -45,7 +45,7 @@ html {
 
 body {
     font-family:
-        'Poppins',
+        Poppins,
         -apple-system,
         BlinkMacSystemFont,
         'Segoe UI',
@@ -449,7 +449,6 @@ img {
 
 .search-bar {
     display: flex;
-    max-width: 400px;
     background: var(--bg-dark-tertiary);
     border-radius: 50px;
     overflow: hidden;
@@ -779,7 +778,7 @@ img {
 }
 
 .feedback-header p {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgb(255 255 255 / 80%);
     font-size: 0.95rem;
 }
 
@@ -872,7 +871,7 @@ img {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(201, 166, 107, 0.15);
+    box-shadow: 0 0 0 3px rgb(201 166 107 / 15%);
 }
 
 .form-group textarea {
@@ -928,7 +927,7 @@ img {
 
 .submit-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(201, 166, 107, 0.3);
+    box-shadow: 0 10px 30px rgb(201 166 107 / 30%);
 }
 
 .footer {
@@ -1108,7 +1107,7 @@ img {
     font-weight: 500;
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
     .footer-grid {
         grid-template-columns: 1fr 1fr;
     }
@@ -1118,7 +1117,7 @@ img {
     }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
     .feedback-card form {
         padding: 25px;
     }
@@ -1141,7 +1140,7 @@ img {
     }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .nav {
         display: none;
     }
@@ -1181,7 +1180,7 @@ img {
     }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
     .menu-grid {
         grid-template-columns: 1fr;
     }

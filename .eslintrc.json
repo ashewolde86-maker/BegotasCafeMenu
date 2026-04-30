@@ -7,10 +7,39 @@
     "parserOptions": {
         "ecmaVersion": "latest"
     },
+    "globals": {
+        "DB_KEYS": "writable",
+        "defaultMenuData": "writable",
+        "defaultSubCategories": "writable",
+        "defaultMainCategories": "writable",
+        "defaultDisplaySettings": "writable",
+        "getMenuData": "writable",
+        "initMenuDatabase": "writable",
+        "initTranslations": "writable",
+        "currentLang": "writable",
+        "renderMenu": "writable",
+        "renderPayment": "writable",
+        "renderFilterChips": "writable",
+        "renderCarousel": "writable",
+        "XLSX": "readonly",
+        "menuData": "writable",
+        "syncMenuData": "writable"
+    },
+    "ignorePatterns": ["dist/", "node_modules/"],
     "rules": {
         "no-unused-vars": "warn",
         "no-console": "off",
+        "no-redeclare": "off",
+        "no-global-assign": "off",
         "semi": ["error", "always"],
         "quotes": ["error", "single"]
-    }
+    },
+    "overrides": [
+        {
+            "files": ["scripts/**/*.js"],
+            "env": {
+                "node": true
+            }
+        }
+    ]
 }

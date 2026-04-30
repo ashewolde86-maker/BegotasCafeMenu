@@ -420,8 +420,8 @@ function generateId(key) {
     return Math.max(...data.map((item) => item.id)) + 1;
 }
 
-document.addEventListener('DOMContentLoaded', async function () {
-    await initMenuDatabase();
+document.addEventListener('DOMContentLoaded', function () {
+    initMenuDatabase();
     migrateLegacyAccountToAccountsList();
     initLogin();
 

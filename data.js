@@ -22,9 +22,165 @@ const defaultDisplaySettings = {
     categoryDisplay: 'main',
 };
 
+// Embed menu data directly to avoid async loading issues
+const embeddedMenuData = [
+ {
+  "SubCategory": "Burger",
+  "Category": "Food",
+  "Image": "images/Products/Burger_Special.jpg",
+  "Name": "Begotas Special Burger",
+  "NameAm": "ስፔሻል በርገር",
+  "Price": 450
+ },
+ {
+  "SubCategory": "Burger",
+  "Category": "Food",
+  "Image": "images/Products/Burger_Cheese.jpg",
+  "Name": "Cheese Burger",
+  "NameAm": "ቺዝ በርገር",
+  "Price": 400
+ },
+ {
+  "SubCategory": "Burger",
+  "Category": "Food",
+  "Image": "images/Products/Burger_Doubleking.jpg",
+  "Name": "Double King Burger",
+  "NameAm": "ደብል ክንግ በርገር",
+  "Price": 550
+ },
+ {
+  "SubCategory": "Burger",
+  "Category": "Food",
+  "Image": "images/Products/Burger_Chicken.jpg",
+  "Name": "Chicken Burger",
+  "NameAm": "ቺክን በርገር",
+  "Price": 550
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Soft.jpg",
+  "Name": "Soft Cake",
+  "NameAm": "ለስላሳ ኬክ",
+  "Price": 90
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Cream.jpg",
+  "Name": "Cream Cake",
+  "NameAm": "ክሬም ኬክ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Chocolate.jpg",
+  "Name": "Chocolate Cake",
+  "NameAm": "ቼኮለታ ኬክ",
+  "Price": 100
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Caramel.jpg",
+  "Name": "Caramel Cake",
+  "NameAm": "ካራሜል ኬክ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_strawberry.jpg",
+  "Name": "Strawberry Cake",
+  "NameAm": "እንጆሪ ኬክ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Tiramisu.jpg",
+  "Name": "Teramisu Cake",
+  "NameAm": "ቴራሚሱ ኬክ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Cup.jpg",
+  "Name": "Cup Cake",
+  "NameAm": "ካፕ ኬክ",
+  "Price": 80
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Donut.jpg",
+  "Name": "Donut",
+  "NameAm": "ዶናት",
+  "Price": 80
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Bonbolino.jpg",
+  "Name": "Bonbolino",
+  "NameAm": "ቦንቦሊኖ",
+  "Price": 50
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Milfoni.jpg",
+  "Name": "Milfoni Cake",
+  "NameAm": "ሚልፎኒ ኬክ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_CreamPuffis.jpg",
+  "Name": "Cream Puffs",
+  "NameAm": "ቦክሰኛ ኬክ",
+  "Price": 120
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Tortacircle.jpg",
+  "Name": "Torta Circle 1kg",
+  "NameAm": "ቶርታ ክብ 1ኪግ",
+  "Price": 1300
+ },
+ {
+  "SubCategory": "Cakes",
+  "Category": "Food",
+  "Image": "images/Products/Cake_Tortarectangle.jpg",
+  "Name": "Torta Rectangle 1kg",
+  "NameAm": "ቶርታ 4ማዕዘን 1ኪግ",
+  "Price": 1500
+ },
+ {
+  "SubCategory": "Chicken",
+  "Category": "Food",
+  "Image": "images/Products/Chicken_Tenders.jpg",
+  "Name": "Chicken Tenders",
+  "NameAm": "ቺክን  ቴንደርስ",
+  "Price": 600
+ },
+ {
+  "SubCategory": "Chicken",
+  "Category": "Food",
+  "Image": "images/Products/Chicken_Wings.jpg",
+  "Name": "Chicken Wings",
+  "NameAm": "ቺክን ዊንግስ",
+  "Price": 600
+ }
+];
+
 const defaultMenuData = {
     specials: [],
-    products: [],
+    products: embeddedMenuData,
     payment: [
         {
             id: 1,
@@ -45,49 +201,20 @@ const defaultMenuData = {
     },
 };
 
-async function loadMenuDataFromFile() {
-    try {
-        console.log('Attempting to load menu-data.json...');
-        const response = await fetch('menu-data.json');
-        console.log('Response status:', response.status);
-        
-        if (!response.ok) {
-            console.warn('Could not load menu-data.json, using defaults');
-            return defaultMenuData;
-        }
-        const data = await response.json();
-        console.log('Loaded menu data:', data?.length || 0, 'products');
-        
-        const result = {
-            ...defaultMenuData,
-            products: data || [],
-            specials: []
-        };
-        console.log('Final menu data result:', result.products.length, 'products');
-        return result;
-    } catch (error) {
-        console.error('Error loading menu data:', error);
-        return defaultMenuData;
-    }
-}
-
-async function initMenuDatabase() {
-    // Load menu data from JSON file
-    const menuData = await loadMenuDataFromFile();
-    
-    // Force fresh load from JSON by clearing and setting new data
-    localStorage.setItem(DB_KEYS.PRODUCTS, JSON.stringify(menuData.products));
-    localStorage.setItem(DB_KEYS.SPECIALS, JSON.stringify(menuData.specials));
-    localStorage.setItem(DB_KEYS.PAYMENT, JSON.stringify(menuData.payment));
-    localStorage.setItem(DB_KEYS.RESTAURANT, JSON.stringify(menuData.restaurant));
+function initMenuDatabase() {
+    // Use embedded data directly
+    localStorage.setItem(DB_KEYS.PRODUCTS, JSON.stringify(defaultMenuData.products));
+    localStorage.setItem(DB_KEYS.SPECIALS, JSON.stringify(defaultMenuData.specials));
+    localStorage.setItem(DB_KEYS.PAYMENT, JSON.stringify(defaultMenuData.payment));
+    localStorage.setItem(DB_KEYS.RESTAURANT, JSON.stringify(defaultMenuData.restaurant));
     localStorage.setItem(DB_KEYS.REVIEWS, JSON.stringify([]));
     localStorage.setItem(DB_KEYS.SUBCATEGORIES, JSON.stringify(defaultSubCategories));
     localStorage.setItem(DB_KEYS.MAIN_CATEGORIES, JSON.stringify(defaultMainCategories));
     localStorage.setItem(DB_KEYS.DISPLAY_SETTINGS, JSON.stringify(defaultDisplaySettings));
 }
 
-async function getMenuData() {
-    await initMenuDatabase();
+function getMenuData() {
+    initMenuDatabase();
 
     const specials = JSON.parse(localStorage.getItem(DB_KEYS.SPECIALS) || '[]');
     const products = JSON.parse(localStorage.getItem(DB_KEYS.PRODUCTS) || '[]');
@@ -121,9 +248,9 @@ function syncMenuData() {
     return getMenuData();
 }
 
-document.addEventListener('DOMContentLoaded', async function () {
-    await initMenuDatabase();
-    window.menuData = await getMenuData();
+document.addEventListener('DOMContentLoaded', function () {
+    initMenuDatabase();
+    window.menuData = getMenuData();
     window.menuData.subCategories = getSubCategories();
     window.syncMenuData = syncMenuData;
 });

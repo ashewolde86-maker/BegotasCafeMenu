@@ -415,6 +415,29 @@ img {
     color: white;
 }
 
+.filter-chip-main {
+    margin-top: 10px;
+}
+
+.filter-chip-main:first-child {
+    margin-top: 0;
+}
+
+.filter-chip-sub {
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    margin-left: 15px;
+    background: var(--bg-dark-secondary);
+    border-color: transparent;
+}
+
+.filter-chip-sub:hover,
+.filter-chip-sub.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
 .search-toggle-row {
     display: flex;
     justify-content: center;

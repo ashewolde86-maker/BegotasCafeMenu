@@ -807,11 +807,12 @@
                                  <div class="card-body">
                                      <div class="form-group">
                                          <label>Category Display Mode</label>
-                                         <select id="categoryDisplayMode" onchange="saveDisplaySettings()">
-                                             <option value="main">Show Main Categories Only</option>
-                                             <option value="sub">Show Sub Categories Only</option>
-                                         </select>
-                                         <small>Choose whether customers see main categories (Drink, Food, Extra) or sub categories (Coffee, Burger, etc.)</small>
+                                          <select id="categoryDisplayMode" onchange="saveDisplaySettings()">
+                                              <option value="main">Show Main Categories Only</option>
+                                              <option value="sub">Show Sub Categories Only</option>
+                                              <option value="both">Show Both Categories</option>
+                                          </select>
+                                          <small>Choose whether customers see main categories (Drink, Food, Extra), sub categories, or both grouped together</small>
                                      </div>
                                  </div>
                              </div>
@@ -1150,7 +1151,6 @@
                                 <option value="Meat">Meat</option>
                                 <option value="Fasting">Fasting Menu</option>
                                 <option value="Pizza">Pizza</option>
-                                <option value="Extra">Extra</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -1259,11 +1259,11 @@
                             <small>Lower numbers appear first</small>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="button" class="btn-primary" onclick="saveItem()">Save</button>
+                    </div>
                 </form>
-                <div class="modal-footer">
-                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
-                    <button type="button" class="btn-primary" onclick="saveItem()">Save</button>
-                </div>
             </div>
         </div>
 

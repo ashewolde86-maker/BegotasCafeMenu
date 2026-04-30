@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let searchQuery = '';
     let carouselIndex = 0;
     let carouselAutoplay;
+    let currentCategoryType = 'all';
 
     const menuGrid = document.getElementById('menuGrid');
     const searchInput = document.getElementById('searchInput');
@@ -203,12 +204,31 @@ document.addEventListener('DOMContentLoaded', function () {
             filterChips.innerHTML = categories
                 .map(
                     (cat, index) => `
-                <button class="filter-chip ${index === 0 ? 'active' : ''}" data-subcategory="${cat === 'All Types' ? 'all' : cat}">
+                <button class="filter-chip ${index === 0 ? 'active' : ''}" data-subcategory="${cat === 'All Types' ? 'all' : cat}" data-type="main">
                     ${getSubCategoryIcon(cat)} <span>${cat}</span>
                 </button>
             `,
                 )
                 .join('');
+        } else if (categoryDisplay === 'both') {
+            const mainCats = (window.menuData.mainCategories || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+            const allSubCats = window.menuData.subCategories || [];
+
+            let html = `<button class="filter-chip active" data-subcategory="all" data-type="all">${getSubCategoryIcon('All Types')} <span>All Types</span></button>`;
+
+            mainCats.forEach((mainCat) => {
+                html += `<button class="filter-chip filter-chip-main" data-subcategory="${mainCat.name}" data-type="main" data-maincategory="${mainCat.name}">${getSubCategoryIcon(mainCat.name)} <span>${mainCat.name}</span></button>`;
+
+                const subCats = allSubCats
+                    .filter((c) => c.mainCategory === mainCat.name)
+                    .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+
+                subCats.forEach((subCat) => {
+                    html += `<button class="filter-chip filter-chip-sub" data-subcategory="${subCat.name}" data-type="sub" data-maincategory="${mainCat.name}">${getSubCategoryIcon(subCat.name)} <span>${subCat.name}</span></button>`;
+                });
+            });
+
+            filterChips.innerHTML = html;
         } else {
             const sortedSubCats = (window.menuData.subCategories || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
             const categories = ['All Types', ...sortedSubCats.map((c) => c.name)];
@@ -249,15 +269,22 @@ document.addEventListener('DOMContentLoaded', function () {
     function filterProducts() {
         if (!window.menuData || !window.menuData.products) return [];
 
+        const displaySettings = window.menuData.displaySettings || {};
+        const categoryDisplay = displaySettings.categoryDisplay || 'main';
+
         const filtered = window.menuData.products.filter((product) => {
             if (product.available === false) return false;
 
-            const displaySettings = window.menuData.displaySettings || {};
-            const categoryDisplay = displaySettings.categoryDisplay || 'main';
-
             let matchesCategory = true;
             if (currentCategory !== 'all') {
-                if (categoryDisplay === 'main') {
+                if (categoryDisplay === 'both') {
+                    if (currentCategoryType === 'main') {
+                        matchesCategory = product.mainCategory === currentCategory;
+                    } else {
+                        matchesCategory =
+                            product.subCategory === currentCategory || product.category === currentCategory;
+                    }
+                } else if (categoryDisplay === 'main') {
                     matchesCategory = product.mainCategory === currentCategory;
                 } else {
                     matchesCategory =
@@ -411,6 +438,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.category-icon').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
         currentCategory = btn.dataset.category;
+        currentCategoryType = currentCategory === 'all' ? 'all' : 'main';
 
         currentSubCategory = 'all';
         document.querySelectorAll('.filter-chip').forEach((b) => b.classList.remove('active'));
@@ -424,7 +452,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const btn = e.currentTarget;
         document.querySelectorAll('.filter-chip').forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
-        currentSubCategory = btn.dataset.subcategory;
+
+        const chipType = btn.dataset.type || 'sub';
+        const chipSubcategory = btn.dataset.subcategory;
+
+        if (chipType === 'main') {
+            currentCategory = chipSubcategory;
+            currentCategoryType = 'main';
+        } else if (chipType === 'sub') {
+            currentCategory = chipSubcategory;
+            currentCategoryType = 'sub';
+        } else {
+            currentCategory = 'all';
+            currentCategoryType = 'all';
+        }
+
+        currentSubCategory = 'all';
         renderMenu();
     }
 

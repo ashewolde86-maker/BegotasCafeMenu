@@ -46,8 +46,12 @@ const defaultMenuData = {
 };
 
 function initMenuDatabase() {
-    localStorage.setItem(DB_KEYS.PRODUCTS, JSON.stringify(defaultMenuData.products));
-    localStorage.setItem(DB_KEYS.SPECIALS, JSON.stringify(defaultMenuData.specials));
+    if (!localStorage.getItem(DB_KEYS.PRODUCTS) || localStorage.getItem(DB_KEYS.PRODUCTS) === '[]') {
+        localStorage.setItem(DB_KEYS.PRODUCTS, JSON.stringify(defaultMenuData.products));
+    }
+    if (!localStorage.getItem(DB_KEYS.SPECIALS) || localStorage.getItem(DB_KEYS.SPECIALS) === '[]') {
+        localStorage.setItem(DB_KEYS.SPECIALS, JSON.stringify(defaultMenuData.specials));
+    }
     if (!localStorage.getItem(DB_KEYS.PAYMENT) || localStorage.getItem(DB_KEYS.PAYMENT) === '[]') {
         localStorage.setItem(DB_KEYS.PAYMENT, JSON.stringify(defaultMenuData.payment));
     }

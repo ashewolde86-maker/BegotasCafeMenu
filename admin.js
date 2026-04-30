@@ -338,6 +338,29 @@ function initDatabase() {
         localStorage.setItem(DB_KEYS.SUBCATEGORIES, JSON.stringify(defaultSubCategories));
     }
     migrateLegacyCategoryNames();
+    removeMainCategoryNamesFromSubcategories();
+}
+
+function removeMainCategoryNamesFromSubcategories() {
+    const mainCategoryNames = ['Drink', 'Food', 'Extra'];
+    let changed = false;
+    let subcategories = getData(DB_KEYS.SUBCATEGORIES);
+    const originalLength = subcategories.length;
+    subcategories = subcategories.filter((cat) => !mainCategoryNames.includes(cat.name));
+    if (subcategories.length !== originalLength) {
+        changed = true;
+        saveData(DB_KEYS.SUBCATEGORIES, subcategories);
+    }
+    if (changed) {
+        let products = getData(DB_KEYS.PRODUCTS);
+        products = products.map((p) => {
+            if (mainCategoryNames.includes(p.subCategory)) {
+                return { ...p, subCategory: '', category: p.mainCategory || '' };
+            }
+            return p;
+        });
+        saveData(DB_KEYS.PRODUCTS, products);
+    }
 }
 
 function renameCategoryValue(value) {
@@ -1307,6 +1330,77 @@ function editItem(type, id) {
 
 function saveItem() {
     if (!ensurePermission(currentEditType)) return;
+
+    if (currentEditType === 'menu') {
+        const name = document.getElementById('itemName').value.trim();
+        const price = document.getElementById('itemPrice').value;
+        const mainCat = document.getElementById('itemMainCategory').value;
+
+        if (!name) {
+            alert('Product name is required.');
+            return;
+        }
+        if (!price || isNaN(parseFloat(price)) || parseFloat(price) < 0) {
+            alert('Please enter a valid price.');
+            return;
+        }
+        if (!mainCat) {
+            alert('Please select a main category.');
+            return;
+        }
+    } else if (currentEditType === 'specials') {
+        const name = document.getElementById('specialName').value.trim();
+        const price = document.getElementById('specialPrice').value;
+        const mainCat = document.getElementById('specialMainCategory').value;
+
+        if (!name) {
+            alert('Product name is required.');
+            return;
+        }
+        if (!price || isNaN(parseFloat(price)) || parseFloat(price) < 0) {
+            alert('Please enter a valid price.');
+            return;
+        }
+        if (!mainCat) {
+            alert('Please select a main category.');
+            return;
+        }
+    } else if (currentEditType === 'categories') {
+        const name = document.getElementById('categoryName').value.trim();
+        const mainCat = document.getElementById('categoryMainCategory').value;
+        const reservedNames = ['Drink', 'Food', 'Extra'];
+
+        if (!name) {
+            alert('Category name is required.');
+            return;
+        }
+        if (reservedNames.includes(name)) {
+            alert('"' + name + '" is a main category and cannot be used as a subcategory.');
+            return;
+        }
+        if (!mainCat) {
+            alert('Please select a main category.');
+            return;
+        }
+    } else if (currentEditType === 'payment') {
+        const method = document.getElementById('paymentMethod').value.trim();
+        const holder = document.getElementById('paymentHolder').value.trim();
+        const account = document.getElementById('paymentAccount').value.trim();
+
+        if (!method) {
+            alert('Payment method is required.');
+            return;
+        }
+        if (!holder) {
+            alert('Account holder is required.');
+            return;
+        }
+        if (!account) {
+            alert('Account number is required.');
+            return;
+        }
+    }
+
     let key, data, newItem;
     const nowIso = new Date().toISOString();
 
@@ -1455,6 +1549,10 @@ function saveItem() {
 
     saveData(key, data);
     closeModal();
+
+    const typeLabels = { menu: 'Product', specials: 'Special product', categories: 'Category', payment: 'Payment method' };
+    alert((currentEditingItem ? 'Updated ' : 'Added ') + (typeLabels[currentEditType] || 'Item') + ' successfully!');
+
     if (key === DB_KEYS.PRODUCTS) {
         refreshMenuAfterDataChange();
     } else {
@@ -1766,11 +1864,6 @@ function filterCategories() {
     updateCategorySelectIcons();
 }
 
-function onMainCategoryChange() {
-    populateSubCategoryDropdown();
-    updateCategorySelectIcons();
-}
-
 function updateProductsSubCategory(oldName, newName) {
     let products = getData(DB_KEYS.PRODUCTS);
     let updated = false;
@@ -1963,7 +2056,8 @@ function importMenuFromExcel(event) {
                 }
 
                 const subCategory = row.Subcategory || row.SubCategory || row.subCategory || '';
-                if (subCategory && !subCatNames.includes(subCategory)) {
+                const reservedNames = ['Drink', 'Food', 'Extra'];
+                if (subCategory && (!subCatNames.includes(subCategory) || reservedNames.includes(subCategory))) {
                     skippedCount++;
                     skippedItems.push(name + ' (invalid subcategory: ' + subCategory + ')');
                     return;
@@ -2080,6 +2174,8 @@ function importCategoriesFromExcel(event) {
 
             const existingCategories = getData(DB_KEYS.SUBCATEGORIES);
             const existingNames = new Set(existingCategories.map((c) => c.name.toLowerCase()));
+            const reservedNames = new Set(['drink', 'food', 'extra']);
+            reservedNames.forEach((n) => existingNames.add(n));
 
             const nowIso = new Date().toISOString();
             let addedCount = 0;
@@ -2092,7 +2188,13 @@ function importCategoriesFromExcel(event) {
                     return;
                 }
 
-                if (existingNames.has(String(name).toLowerCase())) {
+                const normalizedName = String(name).toLowerCase();
+                if (existingNames.has(normalizedName)) {
+                    skippedCount++;
+                    return;
+                }
+
+                if (reservedNames.has(normalizedName)) {
                     skippedCount++;
                     return;
                 }

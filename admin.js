@@ -334,7 +334,7 @@ function initDatabase() {
     if (!localStorage.getItem(DB_KEYS.SETTINGS)) {
         localStorage.setItem(
             DB_KEYS.SETTINGS,
-            JSON.stringify({ menuUrl: 'https://begotascafe.netlify.app/menu.html' }),
+            JSON.stringify({ menuUrl: 'https://ashewolde86-maker.github.io/BegotasCafeMenu/menu.html' }),
         );
     }
     if (!localStorage.getItem(DB_KEYS.SUBCATEGORIES) || localStorage.getItem(DB_KEYS.SUBCATEGORIES) === '[]') {

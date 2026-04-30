@@ -19,7 +19,6 @@ const filesToCopy = [
     'app.js',
     'data.js',
     'translations.js',
-    'netlify.toml',
     'qr-generator.html',
     'images',
 ];

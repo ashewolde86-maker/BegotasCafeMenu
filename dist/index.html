@@ -699,7 +699,145 @@
                 </div>
             </div>
         </footer>
-        <script src="data.js"></script>
-        <script src="app.js"></script>
+        <script>
+        // Inline menu data - completely self-contained
+        const inlineMenuData = [
+            {
+                "SubCategory": "Burger",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=Begotas+Special+Burger",
+                "Name": "Begotas Special Burger",
+                "NameAm": "ስፔሻል በርገር",
+                "Price": 450
+            },
+            {
+                "SubCategory": "Burger",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FFD700/000000?text=Cheese+Burger",
+                "Name": "Cheese Burger",
+                "NameAm": "ቺዝ በርገር",
+                "Price": 400
+            },
+            {
+                "SubCategory": "Burger",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=Double+King+Burger",
+                "Name": "Double King Burger",
+                "NameAm": "ደብል ክንግ በርገር",
+                "Price": 550
+            },
+            {
+                "SubCategory": "Cakes",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FF69B4/FFFFFF?text=Soft+Cake",
+                "Name": "Soft Cake",
+                "NameAm": "ለስላሳ ኬክ",
+                "Price": 90
+            },
+            {
+                "SubCategory": "Cakes",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FF69B4/FFFFFF?text=Cream+Cake",
+                "Name": "Cream Cake",
+                "NameAm": "ክሬም ኬክ",
+                "Price": 100
+            },
+            {
+                "SubCategory": "Hot Drinks",
+                "Category": "Drink",
+                "Image": "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=Coffee",
+                "Name": "Coffee",
+                "NameAm": "ቡና",
+                "Price": 50
+            },
+            {
+                "SubCategory": "Hot Drinks",
+                "Category": "Drink",
+                "Image": "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=Macchiato",
+                "Name": "Macchiato",
+                "NameAm": "ማክያቶ",
+                "Price": 70
+            },
+            {
+                "SubCategory": "Normal Juice",
+                "Category": "Drink",
+                "Image": "https://via.placeholder.com/400x300/FFA500/FFFFFF?text=Orange+Juice",
+                "Name": "Orange Juice",
+                "NameAm": "ብርቱካን ጁስ",
+                "Price": 100
+            },
+            {
+                "SubCategory": "Normal Juice",
+                "Category": "Drink",
+                "Image": "https://via.placeholder.com/400x300/FFA500/FFFFFF?text=Mango+Juice",
+                "Name": "Mango Juice",
+                "NameAm": "ማንጎ ጁስ",
+                "Price": 100
+            },
+            {
+                "SubCategory": "Pizza",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FF6347/FFFFFF?text=Special+Pizza",
+                "Name": "Begotas Special Pizza",
+                "NameAm": "ስፔሻል ፒዛ",
+                "Price": 650
+            },
+            {
+                "SubCategory": "Pizza",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FF6347/FFFFFF?text=Cheese+Pizza",
+                "Name": "Cheese Pizza",
+                "NameAm": "ቺዝ ፒዛ",
+                "Price": 500
+            },
+            {
+                "SubCategory": "Chicken",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FFB6C1/FFFFFF?text=Chicken+Wings",
+                "Name": "Chicken Wings",
+                "NameAm": "ቺክን ዊንግስ",
+                "Price": 600
+            }
+        ];
+
+        // Override the menu loading with inline data
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find the menu grid and no results elements
+            const menuGrid = document.getElementById('menuGrid');
+            const noResults = document.getElementById('noResults');
+            const debugInfo = document.getElementById('debug-info');
+            
+            if (debugInfo) {
+                debugInfo.innerHTML = `
+                    <strong>INLINE MENU DATA:</strong><br>
+                    Total products: ${inlineMenuData.length}<br>
+                    Categories: ${[...new Set(inlineMenuData.map(item => item.Category))].join(', ')}<br>
+                    Status: SUCCESS - Using inline data
+                `;
+            }
+            
+            if (menuGrid && inlineMenuData.length > 0) {
+                // Hide no results message
+                if (noResults) noResults.classList.remove('show');
+                
+                // Render menu items directly
+                menuGrid.innerHTML = inlineMenuData.map(item => `
+                    <div class="menu-card">
+                        <img src="${item.Image}" alt="${item.Name}" onerror="this.src='https://via.placeholder.com/400x300/cccccc/666666?text=Image+Not+Found'">
+                        <div class="menu-card-content">
+                            <div class="menu-category">${item.Category} - ${item.SubCategory}</div>
+                            <h3 class="menu-name">${item.Name}</h3>
+                            <div class="menu-name-am">${item.NameAm}</div>
+                            <div class="menu-price">${item.Price}.00 Br</div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                console.log('Inline menu rendered successfully with', inlineMenuData.length, 'items');
+            } else {
+                console.error('Menu grid element not found or no data available');
+            }
+        });
+    </script>
     </body>
 </html>

@@ -2235,19 +2235,32 @@ function importCategoriesFromExcel(event) {
             });
 
             saveData(DB_KEYS.SUBCATEGORIES, existingCategories);
-            loadCategories();
-            filterCategories();
+             loadCategories();
+             filterCategories();
 
-            let message = `Successfully imported ${addedCount} categorie(s).`;
-            if (skippedCount > 0) {
-                message += ` Skipped ${skippedCount} duplicate or invalid entrie(s).`;
-            }
-            alert(message);
-        } catch (error) {
-            alert('Failed to import Excel: ' + error.message);
-        } finally {
-            event.target.value = '';
-        }
-    };
-    reader.readAsBinaryString(file);
-}
+             let message = `Successfully imported ${addedCount} categorie(s).`;
+             if (skippedCount > 0) {
+                 message += ` Skipped ${skippedCount} duplicate or invalid entrie(s).`;
+             }
+             alert(message);
+         } catch (error) {
+             alert('Failed to import Excel: ' + error.message);
+         } finally {
+             event.target.value = '';
+         }
+     };
+     reader.readAsBinaryString(file);
+ }
+
+// Expose functions used in HTML event handlers
+window.toggleProductStatus = toggleProductStatus;
+window.toggleSpecialStatus = toggleSpecialStatus;
+window.moveCategory = moveCategory;
+window.moveMainCategory = moveMainCategory;
+window.addMainCategory = addMainCategory;
+window.editMainCategory = editMainCategory;
+window.deleteMainCategory = deleteMainCategory;
+window.saveDisplaySettings = saveDisplaySettings;
+window.saveProductsToExcel = saveProductsToExcel;
+window.saveCategoriesToExcel = saveCategoriesToExcel;
+window.saveSpecialsToExcel = saveSpecialsToExcel;

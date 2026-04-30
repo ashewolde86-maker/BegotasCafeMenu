@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         carouselSlides.innerHTML = window.menuData.specials
             .map(
-                (product, index) => `
+                (product) => `
             <div class="carousel-slide">
                 <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/400x300?text=' + encodeURIComponent('${product.name}')">
                 <div class="carousel-slide-content">
@@ -567,7 +567,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    let lastScroll = 0;
     const header = document.querySelector('.header');
 
     if (header) {
@@ -579,8 +578,6 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 header.style.padding = '12px 0';
             }
-
-            lastScroll = currentScroll;
         });
     }
 });

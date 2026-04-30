@@ -198,11 +198,7 @@
                     </a>
                 </nav>
                 <div class="sidebar-footer">
-                    <a
-                        href="https://begotascafe.netlify.app/index.html"
-                        target="_blank"
-                        class="view-menu-btn"
-                    >
+                    <a href="https://begotascafe.netlify.app/index.html" target="_blank" class="view-menu-btn">
                         <svg
                             width="20"
                             height="20"
@@ -399,7 +395,9 @@
                                 </div>
                                 <div class="card-body">
                                     <p style="color: var(--text-muted); margin-bottom: 15px">Your fixed QR code URL:</p>
-                                    <div class="qr-url-box" id="qrUrlBox">https://begotascafe.netlify.app/menu.html</div>
+                                    <div class="qr-url-box" id="qrUrlBox">
+                                        https://begotascafe.netlify.app/menu.html
+                                    </div>
                                     <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 10px">
                                         The menu content updates dynamically. QR code never needs to change!
                                     </p>
@@ -840,7 +838,11 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label>Menu URL (Fixed for QR Code)</label>
-                                        <input type="url" id="menuUrl" placeholder="https://begotascafe.netlify.app/menu.html" />
+                                        <input
+                                            type="url"
+                                            id="menuUrl"
+                                            placeholder="https://begotascafe.netlify.app/menu.html"
+                                        />
                                         <small>This is your fixed URL - the QR code will always point here.</small>
                                     </div>
                                     <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
@@ -1270,7 +1272,7 @@
                             <select id="itemSubCategory">
                                 <option value="">Select Sub Category</option>
                                 <option value="Normal Juice">Normal Juice</option>
-                                <option value="Shake Juice">Shake Juice</option>                              
+                                <option value="Shake Juice">Shake Juice</option>
                                 <option value="Iced Drink">Iced Drink</option>
                                 <option value="Soft Drink">Soft Drink</option>
                                 <option value="Today's Special">Today's Special</option>
@@ -1286,7 +1288,6 @@
                                 <option value="Soup">Soup</option>
                                 <option value="Cake">Cake</option>
                                 <option value="Pizza">Pizza</option>
-
                             </select>
                         </div>
                         <div class="form-group">

@@ -14,7 +14,7 @@ const defaultSubCategories = [];
 
 const defaultMainCategories = [
     { id: 1, name: 'Food', name_am: 'ምግብ', sortOrder: 1, icon: 'food' },
-    { id: 2, name: 'Drink', name_am: 'መጠጥ', sortOrder: 2, icon: 'drink' },    
+    { id: 2, name: 'Drink', name_am: 'መጠጥ', sortOrder: 2, icon: 'drink' },
     { id: 3, name: 'Extra', name_am: 'ተጨማሪ', sortOrder: 3, icon: 'extra' },
 ];
 

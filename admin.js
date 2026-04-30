@@ -585,7 +585,8 @@ function updateMenuPagination(totalItems, totalPages) {
     }
 
     if (totalItems === 0) {
-        paginationContainer.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:10px;">No products found.</p>';
+        paginationContainer.innerHTML =
+            '<p style="text-align:center;color:var(--text-muted);padding:10px;">No products found.</p>';
         return;
     }
 
@@ -747,10 +748,9 @@ function loadPayment() {
     if (!tbody) return;
 
     tbody.innerHTML = payment
-        .map(
-            (p) => {
-                const isActive = p.active !== false;
-                return `
+        .map((p) => {
+            const isActive = p.active !== false;
+            return `
         <tr>
             <td>${p.method}</td>
             <td>${p.type}</td>
@@ -770,8 +770,7 @@ function loadPayment() {
             </td>
         </tr>
     `;
-            },
-        )
+        })
         .join('');
 
     if (document.getElementById('totalPayment')) {
@@ -983,7 +982,12 @@ function editMainCategory(id) {
 }
 
 function deleteMainCategory(id) {
-    if (!confirm('Are you sure you want to delete this main category? This will not delete the associated subcategories and products.')) return;
+    if (
+        !confirm(
+            'Are you sure you want to delete this main category? This will not delete the associated subcategories and products.',
+        )
+    )
+        return;
 
     let mainCats = getData(DB_KEYS.MAIN_CATEGORIES);
     mainCats = mainCats.filter((c) => c.id !== id);
@@ -1550,7 +1554,12 @@ function saveItem() {
     saveData(key, data);
     closeModal();
 
-    const typeLabels = { menu: 'Product', specials: 'Special product', categories: 'Category', payment: 'Payment method' };
+    const typeLabels = {
+        menu: 'Product',
+        specials: 'Special product',
+        categories: 'Category',
+        payment: 'Payment method',
+    };
     alert((currentEditingItem ? 'Updated ' : 'Added ') + (typeLabels[currentEditType] || 'Item') + ' successfully!');
 
     if (key === DB_KEYS.PRODUCTS) {

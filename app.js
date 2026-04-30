@@ -198,7 +198,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const categoryDisplay = displaySettings.categoryDisplay || 'main';
 
         if (categoryDisplay === 'main') {
-            const mainCats = (window.menuData.mainCategories || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+            const mainCats = (window.menuData.mainCategories || []).sort(
+                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0),
+            );
             const categories = ['All Types', ...mainCats.map((c) => c.name)];
 
             filterChips.innerHTML = categories
@@ -211,7 +213,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 )
                 .join('');
         } else if (categoryDisplay === 'both') {
-            const mainCats = (window.menuData.mainCategories || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+            const mainCats = (window.menuData.mainCategories || []).sort(
+                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0),
+            );
             const allSubCats = window.menuData.subCategories || [];
 
             let html = `<button class="filter-chip active" data-subcategory="all" data-type="all">${getSubCategoryIcon('All Types')} <span>All Types</span></button>`;
@@ -230,7 +234,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             filterChips.innerHTML = html;
         } else {
-            const sortedSubCats = (window.menuData.subCategories || []).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+            const sortedSubCats = (window.menuData.subCategories || []).sort(
+                (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0),
+            );
             const categories = ['All Types', ...sortedSubCats.map((c) => c.name)];
 
             filterChips.innerHTML = categories
@@ -287,8 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (categoryDisplay === 'main') {
                     matchesCategory = product.mainCategory === currentCategory;
                 } else {
-                    matchesCategory =
-                        product.subCategory === currentCategory || product.category === currentCategory;
+                    matchesCategory = product.subCategory === currentCategory || product.category === currentCategory;
                 }
             }
 

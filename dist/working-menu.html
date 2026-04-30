@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Begotas Cafe - Working Menu</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .menu-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .menu-card img { width: 100%; height: 200px; object-fit: cover; }
+        .menu-card-content { padding: 15px; }
+        .menu-card h3 { margin-bottom: 10px; color: #333; }
+        .menu-card .price { color: #e74c3c; font-weight: bold; font-size: 1.2em; }
+        .menu-card .category { color: #666; font-size: 0.9em; margin-bottom: 5px; }
+        .debug { background: #f8f9fa; padding: 10px; margin: 20px 0; border-radius: 5px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ Begotas Cafe - Working Menu</h1>
+            <p>Taste the Difference!</p>
+        </div>
+        
+        <div class="debug" id="debug-info">
+            Loading menu data...
+        </div>
+        
+        <div class="menu-grid" id="menu-grid">
+            <!-- Menu items will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Inline menu data - completely self-contained
+        const menuData = [
+            {
+                "SubCategory": "Burger",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=Begotas+Special+Burger",
+                "Name": "Begotas Special Burger",
+                "NameAm": "ስፔሻል በርገር",
+                "Price": 450
+            },
+            {
+                "SubCategory": "Burger",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FFD700/000000?text=Cheese+Burger",
+                "Name": "Cheese Burger",
+                "NameAm": "ቺዝ በርገር",
+                "Price": 400
+            },
+            {
+                "SubCategory": "Burger",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=Double+King+Burger",
+                "Name": "Double King Burger",
+                "NameAm": "ደብል ክንግ በርገር",
+                "Price": 550
+            },
+            {
+                "SubCategory": "Cakes",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FF69B4/FFFFFF?text=Soft+Cake",
+                "Name": "Soft Cake",
+                "NameAm": "ለስላሳ ኬክ",
+                "Price": 90
+            },
+            {
+                "SubCategory": "Cakes",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FF69B4/FFFFFF?text=Cream+Cake",
+                "Name": "Cream Cake",
+                "NameAm": "ክሬም ኬክ",
+                "Price": 100
+            },
+            {
+                "SubCategory": "Hot Drinks",
+                "Category": "Drink",
+                "Image": "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=Coffee",
+                "Name": "Coffee",
+                "NameAm": "ቡና",
+                "Price": 50
+            },
+            {
+                "SubCategory": "Hot Drinks",
+                "Category": "Drink",
+                "Image": "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=Macchiato",
+                "Name": "Macchiato",
+                "NameAm": "ማክያቶ",
+                "Price": 70
+            },
+            {
+                "SubCategory": "Normal Juice",
+                "Category": "Drink",
+                "Image": "https://via.placeholder.com/400x300/FFA500/FFFFFF?text=Orange+Juice",
+                "Name": "Orange Juice",
+                "NameAm": "ብርቱካን ጁስ",
+                "Price": 100
+            },
+            {
+                "SubCategory": "Normal Juice",
+                "Category": "Drink",
+                "Image": "https://via.placeholder.com/400x300/FFA500/FFFFFF?text=Mango+Juice",
+                "Name": "Mango Juice",
+                "NameAm": "ማንጎ ጁስ",
+                "Price": 100
+            },
+            {
+                "SubCategory": "Pizza",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FF6347/FFFFFF?text=Special+Pizza",
+                "Name": "Begotas Special Pizza",
+                "NameAm": "ስፔሻል ፒዛ",
+                "Price": 650
+            },
+            {
+                "SubCategory": "Pizza",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FF6347/FFFFFF?text=Cheese+Pizza",
+                "Name": "Cheese Pizza",
+                "NameAm": "ቺዝ ፒዛ",
+                "Price": 500
+            },
+            {
+                "SubCategory": "Chicken",
+                "Category": "Food",
+                "Image": "https://via.placeholder.com/400x300/FFB6C1/FFFFFF?text=Chicken+Wings",
+                "Name": "Chicken Wings",
+                "NameAm": "ቺክን ዊንግስ",
+                "Price": 600
+            }
+        ];
+
+        // Simple rendering function
+        function renderMenu() {
+            const menuGrid = document.getElementById('menu-grid');
+            const debugInfo = document.getElementById('debug-info');
+            
+            // Update debug info
+            debugInfo.innerHTML = `
+                <strong>DEBUG INFO:</strong><br>
+                Total products: ${menuData.length}<br>
+                Categories: ${[...new Set(menuData.map(item => item.Category))].join(', ')}<br>
+                Subcategories: ${[...new Set(menuData.map(item => item.SubCategory))].join(', ')}<br>
+                Rendering: SUCCESS
+            `;
+            
+            // Render menu items
+            menuGrid.innerHTML = menuData.map(item => `
+                <div class="menu-card">
+                    <img src="${item.Image}" alt="${item.Name}" onerror="this.src='https://via.placeholder.com/400x300/cccccc/666666?text=Image+Not+Found'">
+                    <div class="menu-card-content">
+                        <div class="category">${item.Category} - ${item.SubCategory}</div>
+                        <h3>${item.Name}</h3>
+                        <div class="name-am">${item.NameAm}</div>
+                        <div class="price">${item.Price} Br</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize menu when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Loading working menu...');
+            renderMenu();
+            console.log('Menu loaded successfully!');
+        });
+    </script>
+</body>
+</html>

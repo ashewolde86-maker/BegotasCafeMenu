@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Menu Loading</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-info { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Debug Menu Data Loading</h1>
+    <div id="debug-output"></div>
+    
+    <script src="data.js"></script>
+    <script>
+        const debugOutput = document.getElementById('debug-output');
+        
+        function addDebug(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `debug-info ${type}`;
+            div.innerHTML = message;
+            debugOutput.appendChild(div);
+        }
+        
+        document.addEventListener('DOMContentLoaded', async function() {
+            addDebug('Starting debug process...', 'info');
+            
+            try {
+                addDebug('1. Testing fetch of menu-data.json...', 'info');
+                const response = await fetch('menu-data.json');
+                addDebug(`Response status: ${response.status} ${response.statusText}`, response.ok ? 'success' : 'error');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addDebug(`Successfully loaded ${data.length} products from JSON`, 'success');
+                    
+                    // Show first few products
+                    addDebug('First 3 products:', 'info');
+                    const pre = document.createElement('pre');
+                    pre.textContent = JSON.stringify(data.slice(0, 3), null, 2);
+                    debugOutput.appendChild(pre);
+                } else {
+                    addDebug('Failed to load menu-data.json', 'error');
+                }
+                
+                addDebug('2. Testing initMenuDatabase...', 'info');
+                await initMenuDatabase();
+                addDebug('initMenuDatabase completed', 'success');
+                
+                addDebug('3. Testing getMenuData...', 'info');
+                const menuData = await getMenuData();
+                addDebug(`getMenuData returned ${menuData.products.length} products`, menuData.products.length > 0 ? 'success' : 'error');
+                
+                if (menuData.products.length > 0) {
+                    addDebug('SUCCESS: Menu data is loading correctly!', 'success');
+                    addDebug('The issue might be in the app.js rendering logic', 'info');
+                } else {
+                    addDebug('FAILURE: Menu data is empty after initialization', 'error');
+                }
+                
+            } catch (error) {
+                addDebug(`ERROR: ${error.message}`, 'error');
+                console.error('Debug error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

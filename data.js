@@ -47,19 +47,26 @@ const defaultMenuData = {
 
 async function loadMenuDataFromFile() {
     try {
+        console.log('Attempting to load menu-data.json...');
         const response = await fetch('menu-data.json');
+        console.log('Response status:', response.status);
+        
         if (!response.ok) {
             console.warn('Could not load menu-data.json, using defaults');
             return defaultMenuData;
         }
         const data = await response.json();
-        return {
+        console.log('Loaded menu data:', data?.length || 0, 'products');
+        
+        const result = {
             ...defaultMenuData,
             products: data || [],
             specials: []
         };
+        console.log('Final menu data result:', result.products.length, 'products');
+        return result;
     } catch (error) {
-        console.warn('Error loading menu data:', error);
+        console.error('Error loading menu data:', error);
         return defaultMenuData;
     }
 }
@@ -68,30 +75,15 @@ async function initMenuDatabase() {
     // Load menu data from JSON file
     const menuData = await loadMenuDataFromFile();
     
-    if (!localStorage.getItem(DB_KEYS.PRODUCTS) || localStorage.getItem(DB_KEYS.PRODUCTS) === '[]') {
-        localStorage.setItem(DB_KEYS.PRODUCTS, JSON.stringify(menuData.products));
-    }
-    if (!localStorage.getItem(DB_KEYS.SPECIALS) || localStorage.getItem(DB_KEYS.SPECIALS) === '[]') {
-        localStorage.setItem(DB_KEYS.SPECIALS, JSON.stringify(menuData.specials));
-    }
-    if (!localStorage.getItem(DB_KEYS.PAYMENT) || localStorage.getItem(DB_KEYS.PAYMENT) === '[]') {
-        localStorage.setItem(DB_KEYS.PAYMENT, JSON.stringify(menuData.payment));
-    }
-    if (!localStorage.getItem(DB_KEYS.RESTAURANT) || localStorage.getItem(DB_KEYS.RESTAURANT) === 'null') {
-        localStorage.setItem(DB_KEYS.RESTAURANT, JSON.stringify(menuData.restaurant));
-    }
-    if (!localStorage.getItem(DB_KEYS.REVIEWS)) {
-        localStorage.setItem(DB_KEYS.REVIEWS, JSON.stringify([]));
-    }
-    if (!localStorage.getItem(DB_KEYS.SUBCATEGORIES) || localStorage.getItem(DB_KEYS.SUBCATEGORIES) === '[]') {
-        localStorage.setItem(DB_KEYS.SUBCATEGORIES, JSON.stringify(defaultSubCategories));
-    }
-    if (!localStorage.getItem(DB_KEYS.MAIN_CATEGORIES) || localStorage.getItem(DB_KEYS.MAIN_CATEGORIES) === '[]') {
-        localStorage.setItem(DB_KEYS.MAIN_CATEGORIES, JSON.stringify(defaultMainCategories));
-    }
-    if (!localStorage.getItem(DB_KEYS.DISPLAY_SETTINGS)) {
-        localStorage.setItem(DB_KEYS.DISPLAY_SETTINGS, JSON.stringify(defaultDisplaySettings));
-    }
+    // Force fresh load from JSON by clearing and setting new data
+    localStorage.setItem(DB_KEYS.PRODUCTS, JSON.stringify(menuData.products));
+    localStorage.setItem(DB_KEYS.SPECIALS, JSON.stringify(menuData.specials));
+    localStorage.setItem(DB_KEYS.PAYMENT, JSON.stringify(menuData.payment));
+    localStorage.setItem(DB_KEYS.RESTAURANT, JSON.stringify(menuData.restaurant));
+    localStorage.setItem(DB_KEYS.REVIEWS, JSON.stringify([]));
+    localStorage.setItem(DB_KEYS.SUBCATEGORIES, JSON.stringify(defaultSubCategories));
+    localStorage.setItem(DB_KEYS.MAIN_CATEGORIES, JSON.stringify(defaultMainCategories));
+    localStorage.setItem(DB_KEYS.DISPLAY_SETTINGS, JSON.stringify(defaultDisplaySettings));
 }
 
 async function getMenuData() {

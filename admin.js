@@ -332,7 +332,7 @@ function initDatabase() {
         localStorage.setItem(DB_KEYS.REVIEWS, JSON.stringify([]));
     }
     if (!localStorage.getItem(DB_KEYS.SETTINGS)) {
-        localStorage.setItem(DB_KEYS.SETTINGS, JSON.stringify({ menuUrl: 'https://begotascafe.pro.et/menu.html' }));
+        localStorage.setItem(DB_KEYS.SETTINGS, JSON.stringify({ menuUrl: 'https://begotascafe.netlify.app/menu.html' }));
     }
     if (!localStorage.getItem(DB_KEYS.SUBCATEGORIES) || localStorage.getItem(DB_KEYS.SUBCATEGORIES) === '[]') {
         localStorage.setItem(DB_KEYS.SUBCATEGORIES, JSON.stringify(defaultSubCategories));

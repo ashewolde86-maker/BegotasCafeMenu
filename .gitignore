@@ -6,3 +6,5 @@ dist/
 .env.local
 public copy/
 BegotasCafeMenu/
+
+*.xlsx
